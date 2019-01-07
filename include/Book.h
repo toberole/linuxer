@@ -3,6 +3,8 @@
 
 class Book{
     public:
-    Book(std::string name);
-    ~Book();
+        Book(std::string name);
+        ~Book();
+    public:
+        std::string name;
 }
