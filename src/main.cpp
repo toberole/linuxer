@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
 {
     std::cout<<"hello main"<<std::endl;
 
-    Book book;
+    Book book("name");
 
     
     
