@@ -3,6 +3,8 @@
 #include <mutex>
 #include <string>
 
+#include <Book.h>
+
 void test(){
     std::cout<<"--- test ---"<<std::endl;
 }
@@ -51,6 +53,9 @@ void test_1(){
 int main(int argc, char const *argv[])
 {
     std::cout<<"hello main"<<std::endl;
+
+    Book book;
+
     
     
        
