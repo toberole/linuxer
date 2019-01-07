@@ -7,4 +7,4 @@ class Book{
         ~Book();
     public:
         std::string name;
-}
+};
