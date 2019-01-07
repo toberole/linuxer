@@ -4,6 +4,7 @@
 #include <string>
 
 #include <Book.h>
+#include <Log.hpp>
 
 void test(){
     std::cout<<"--- test ---"<<std::endl;
@@ -56,7 +57,9 @@ int main(int argc, char const *argv[])
 
     Book book("name");
 
+    LogI(book.name);
     
+
     
        
     std::cout<<"press any key to exit ......"<<std::endl;
