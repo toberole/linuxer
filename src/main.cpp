@@ -50,6 +50,7 @@ void test_1(){
 
 int main(int argc, char const *argv[])
 {
+    std::cout<<"hello main"<<std::endl;
     
     
        
