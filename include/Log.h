@@ -1,6 +1,6 @@
-﻿#pragma once
+﻿#ifndef __LOGI_H__
+#define __LOGI_H__
 
-#include <iostream>
-#include <string>
-  
 void LogI(std::string log);
+
+#endif

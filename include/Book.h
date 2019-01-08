@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿#ifndef __BOOK_H__
+#define __BOOK_H__
+
+
 #include <string>
 
 class Book{
@@ -8,3 +11,4 @@ class Book{
     public:
         std::string name;
 };
+#endif
