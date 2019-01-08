@@ -1,7 +1,9 @@
-﻿#include <Book.h>
+﻿
+#include "Log.h"
+#include "Book.h"
 
 #include <string>
-#include <Log.hpp>
+
 
 Book::Book(std::string _name):name(_name){
     

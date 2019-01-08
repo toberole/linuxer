@@ -1,10 +1,12 @@
-﻿#include <iostream>
+﻿
+#include <iostream>
 #include <thread>
 #include <mutex>
 #include <string>
 
-#include <Book.h>
-#include <Log.hpp>
+#include "Log.h"
+#include "Book.h"
+
 
 void test(){
     std::cout<<"--- test ---"<<std::endl;
@@ -58,6 +60,8 @@ int main(int argc, char const *argv[])
     Book book("name");
 
     LogI(book.name);
+
+    
     
 
     
