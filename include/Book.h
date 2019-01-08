@@ -11,5 +11,4 @@ class Book{
     public:
         std::string name;
 };
-
 #endif

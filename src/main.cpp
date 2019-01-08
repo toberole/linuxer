@@ -4,9 +4,14 @@
 #include <mutex>
 #include <string>
 
+<<<<<<< HEAD
 #include "Log.h"
 #include "Book.h"
 
+=======
+#include <Book.h>
+#include <Log.h>
+>>>>>>> 454eb8623d34108c541625779d35a02491d1fc67
 
 void test(){
     std::cout<<"--- test ---"<<std::endl;
