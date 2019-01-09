@@ -57,9 +57,33 @@ include CMakeFiles/main.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/main.dir/flags.make
 
+CMakeFiles/main.dir/src/AppUtil.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/AppUtil.cpp.o: ../src/AppUtil.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/src/AppUtil.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/AppUtil.cpp.o -c /Users/apple/code/cpp_code/linuxer/src/AppUtil.cpp
+
+CMakeFiles/main.dir/src/AppUtil.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/src/AppUtil.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/apple/code/cpp_code/linuxer/src/AppUtil.cpp > CMakeFiles/main.dir/src/AppUtil.cpp.i
+
+CMakeFiles/main.dir/src/AppUtil.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/AppUtil.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/apple/code/cpp_code/linuxer/src/AppUtil.cpp -o CMakeFiles/main.dir/src/AppUtil.cpp.s
+
+CMakeFiles/main.dir/src/AppUtil.cpp.o.requires:
+
+.PHONY : CMakeFiles/main.dir/src/AppUtil.cpp.o.requires
+
+CMakeFiles/main.dir/src/AppUtil.cpp.o.provides: CMakeFiles/main.dir/src/AppUtil.cpp.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AppUtil.cpp.o.provides.build
+.PHONY : CMakeFiles/main.dir/src/AppUtil.cpp.o.provides
+
+CMakeFiles/main.dir/src/AppUtil.cpp.o.provides.build: CMakeFiles/main.dir/src/AppUtil.cpp.o
+
+
 CMakeFiles/main.dir/src/Book.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/Book.cpp.o: ../src/Book.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/src/Book.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/src/Book.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/Book.cpp.o -c /Users/apple/code/cpp_code/linuxer/src/Book.cpp
 
 CMakeFiles/main.dir/src/Book.cpp.i: cmake_force
@@ -81,9 +105,33 @@ CMakeFiles/main.dir/src/Book.cpp.o.provides: CMakeFiles/main.dir/src/Book.cpp.o.
 CMakeFiles/main.dir/src/Book.cpp.o.provides.build: CMakeFiles/main.dir/src/Book.cpp.o
 
 
+CMakeFiles/main.dir/src/Client.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/Client.cpp.o: ../src/Client.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/Client.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/Client.cpp.o -c /Users/apple/code/cpp_code/linuxer/src/Client.cpp
+
+CMakeFiles/main.dir/src/Client.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/src/Client.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/apple/code/cpp_code/linuxer/src/Client.cpp > CMakeFiles/main.dir/src/Client.cpp.i
+
+CMakeFiles/main.dir/src/Client.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/Client.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/apple/code/cpp_code/linuxer/src/Client.cpp -o CMakeFiles/main.dir/src/Client.cpp.s
+
+CMakeFiles/main.dir/src/Client.cpp.o.requires:
+
+.PHONY : CMakeFiles/main.dir/src/Client.cpp.o.requires
+
+CMakeFiles/main.dir/src/Client.cpp.o.provides: CMakeFiles/main.dir/src/Client.cpp.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Client.cpp.o.provides.build
+.PHONY : CMakeFiles/main.dir/src/Client.cpp.o.provides
+
+CMakeFiles/main.dir/src/Client.cpp.o.provides.build: CMakeFiles/main.dir/src/Client.cpp.o
+
+
 CMakeFiles/main.dir/src/Log.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/Log.cpp.o: ../src/Log.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/src/Log.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/src/Log.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/Log.cpp.o -c /Users/apple/code/cpp_code/linuxer/src/Log.cpp
 
 CMakeFiles/main.dir/src/Log.cpp.i: cmake_force
@@ -105,9 +153,33 @@ CMakeFiles/main.dir/src/Log.cpp.o.provides: CMakeFiles/main.dir/src/Log.cpp.o.re
 CMakeFiles/main.dir/src/Log.cpp.o.provides.build: CMakeFiles/main.dir/src/Log.cpp.o
 
 
+CMakeFiles/main.dir/src/Server.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/Server.cpp.o: ../src/Server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/Server.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/Server.cpp.o -c /Users/apple/code/cpp_code/linuxer/src/Server.cpp
+
+CMakeFiles/main.dir/src/Server.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/src/Server.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/apple/code/cpp_code/linuxer/src/Server.cpp > CMakeFiles/main.dir/src/Server.cpp.i
+
+CMakeFiles/main.dir/src/Server.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/Server.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/apple/code/cpp_code/linuxer/src/Server.cpp -o CMakeFiles/main.dir/src/Server.cpp.s
+
+CMakeFiles/main.dir/src/Server.cpp.o.requires:
+
+.PHONY : CMakeFiles/main.dir/src/Server.cpp.o.requires
+
+CMakeFiles/main.dir/src/Server.cpp.o.provides: CMakeFiles/main.dir/src/Server.cpp.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Server.cpp.o.provides.build
+.PHONY : CMakeFiles/main.dir/src/Server.cpp.o.provides
+
+CMakeFiles/main.dir/src/Server.cpp.o.provides.build: CMakeFiles/main.dir/src/Server.cpp.o
+
+
 CMakeFiles/main.dir/src/main.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/main.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/main.dir/src/main.cpp.o -c /Users/apple/code/cpp_code/linuxer/src/main.cpp
 
 CMakeFiles/main.dir/src/main.cpp.i: cmake_force
@@ -131,19 +203,25 @@ CMakeFiles/main.dir/src/main.cpp.o.provides.build: CMakeFiles/main.dir/src/main.
 
 # Object files for target main
 main_OBJECTS = \
+"CMakeFiles/main.dir/src/AppUtil.cpp.o" \
 "CMakeFiles/main.dir/src/Book.cpp.o" \
+"CMakeFiles/main.dir/src/Client.cpp.o" \
 "CMakeFiles/main.dir/src/Log.cpp.o" \
+"CMakeFiles/main.dir/src/Server.cpp.o" \
 "CMakeFiles/main.dir/src/main.cpp.o"
 
 # External object files for target main
 main_EXTERNAL_OBJECTS =
 
+main: CMakeFiles/main.dir/src/AppUtil.cpp.o
 main: CMakeFiles/main.dir/src/Book.cpp.o
+main: CMakeFiles/main.dir/src/Client.cpp.o
 main: CMakeFiles/main.dir/src/Log.cpp.o
+main: CMakeFiles/main.dir/src/Server.cpp.o
 main: CMakeFiles/main.dir/src/main.cpp.o
 main: CMakeFiles/main.dir/build.make
 main: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -151,8 +229,11 @@ CMakeFiles/main.dir/build: main
 
 .PHONY : CMakeFiles/main.dir/build
 
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/src/AppUtil.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/src/Book.cpp.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/src/Client.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/src/Log.cpp.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/src/Server.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/src/main.cpp.o.requires
 
 .PHONY : CMakeFiles/main.dir/requires

@@ -123,6 +123,33 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+src/AppUtil.o: src/AppUtil.cpp.o
+
+.PHONY : src/AppUtil.o
+
+# target to build an object file
+src/AppUtil.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AppUtil.cpp.o
+.PHONY : src/AppUtil.cpp.o
+
+src/AppUtil.i: src/AppUtil.cpp.i
+
+.PHONY : src/AppUtil.i
+
+# target to preprocess a source file
+src/AppUtil.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AppUtil.cpp.i
+.PHONY : src/AppUtil.cpp.i
+
+src/AppUtil.s: src/AppUtil.cpp.s
+
+.PHONY : src/AppUtil.s
+
+# target to generate assembly for a file
+src/AppUtil.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AppUtil.cpp.s
+.PHONY : src/AppUtil.cpp.s
+
 src/Book.o: src/Book.cpp.o
 
 .PHONY : src/Book.o
@@ -150,6 +177,33 @@ src/Book.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Book.cpp.s
 .PHONY : src/Book.cpp.s
 
+src/Client.o: src/Client.cpp.o
+
+.PHONY : src/Client.o
+
+# target to build an object file
+src/Client.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Client.cpp.o
+.PHONY : src/Client.cpp.o
+
+src/Client.i: src/Client.cpp.i
+
+.PHONY : src/Client.i
+
+# target to preprocess a source file
+src/Client.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Client.cpp.i
+.PHONY : src/Client.cpp.i
+
+src/Client.s: src/Client.cpp.s
+
+.PHONY : src/Client.s
+
+# target to generate assembly for a file
+src/Client.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Client.cpp.s
+.PHONY : src/Client.cpp.s
+
 src/Log.o: src/Log.cpp.o
 
 .PHONY : src/Log.o
@@ -176,6 +230,33 @@ src/Log.s: src/Log.cpp.s
 src/Log.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Log.cpp.s
 .PHONY : src/Log.cpp.s
+
+src/Server.o: src/Server.cpp.o
+
+.PHONY : src/Server.o
+
+# target to build an object file
+src/Server.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Server.cpp.o
+.PHONY : src/Server.cpp.o
+
+src/Server.i: src/Server.cpp.i
+
+.PHONY : src/Server.i
+
+# target to preprocess a source file
+src/Server.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Server.cpp.i
+.PHONY : src/Server.cpp.i
+
+src/Server.s: src/Server.cpp.s
+
+.PHONY : src/Server.s
+
+# target to generate assembly for a file
+src/Server.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Server.cpp.s
+.PHONY : src/Server.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -213,12 +294,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... main"
+	@echo "... src/AppUtil.o"
+	@echo "... src/AppUtil.i"
+	@echo "... src/AppUtil.s"
 	@echo "... src/Book.o"
 	@echo "... src/Book.i"
 	@echo "... src/Book.s"
+	@echo "... src/Client.o"
+	@echo "... src/Client.i"
+	@echo "... src/Client.s"
 	@echo "... src/Log.o"
 	@echo "... src/Log.i"
 	@echo "... src/Log.s"
+	@echo "... src/Server.o"
+	@echo "... src/Server.i"
+	@echo "... src/Server.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

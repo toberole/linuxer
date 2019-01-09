@@ -8,7 +8,7 @@
 #include "Book.h"
 
 
-#include "Net.h"
+#include "Server.h"
 
 
 void test(){
@@ -65,7 +65,7 @@ int main(int argc, char const *argv[])
     std::cout<<"hello main"<<std::endl;
 
 
-    startServer();
+    startTCPServer();
     
     
 

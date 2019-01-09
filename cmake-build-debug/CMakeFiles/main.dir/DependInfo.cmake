@@ -4,8 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/apple/code/cpp_code/linuxer/src/AppUtil.cpp" "/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles/main.dir/src/AppUtil.cpp.o"
   "/Users/apple/code/cpp_code/linuxer/src/Book.cpp" "/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles/main.dir/src/Book.cpp.o"
+  "/Users/apple/code/cpp_code/linuxer/src/Client.cpp" "/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles/main.dir/src/Client.cpp.o"
   "/Users/apple/code/cpp_code/linuxer/src/Log.cpp" "/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles/main.dir/src/Log.cpp.o"
+  "/Users/apple/code/cpp_code/linuxer/src/Server.cpp" "/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles/main.dir/src/Server.cpp.o"
   "/Users/apple/code/cpp_code/linuxer/src/main.cpp" "/Users/apple/code/cpp_code/linuxer/cmake-build-debug/CMakeFiles/main.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")

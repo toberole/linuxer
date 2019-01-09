@@ -5,7 +5,8 @@
 #ifndef LINUXER_NET_H
 #define LINUXER_NET_H
 
-void startServer();
-void startClient();
+void startTCPServer();
+
+void startUDPServer();
 
 #endif //LINUXER_NET_H

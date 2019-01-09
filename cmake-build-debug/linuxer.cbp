@@ -82,10 +82,19 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/apple/code/cpp_code/linuxer/src/AppUtil.cpp">
+			<Option target="main"/>
+		</Unit>
 		<Unit filename="/Users/apple/code/cpp_code/linuxer/src/Book.cpp">
 			<Option target="main"/>
 		</Unit>
+		<Unit filename="/Users/apple/code/cpp_code/linuxer/src/Client.cpp">
+			<Option target="main"/>
+		</Unit>
 		<Unit filename="/Users/apple/code/cpp_code/linuxer/src/Log.cpp">
+			<Option target="main"/>
+		</Unit>
+		<Unit filename="/Users/apple/code/cpp_code/linuxer/src/Server.cpp">
 			<Option target="main"/>
 		</Unit>
 		<Unit filename="/Users/apple/code/cpp_code/linuxer/src/main.cpp">
