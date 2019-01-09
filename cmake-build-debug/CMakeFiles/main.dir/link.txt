@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names -L/usr/local/opt/openssl/lib CMakeFiles/main.dir/src/AppUtil.cpp.o CMakeFiles/main.dir/src/Book.cpp.o CMakeFiles/main.dir/src/Client.cpp.o CMakeFiles/main.dir/src/Log.cpp.o CMakeFiles/main.dir/src/Server.cpp.o CMakeFiles/main.dir/src/main.cpp.o  -o main -lpthread 
