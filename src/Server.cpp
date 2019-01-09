@@ -50,9 +50,12 @@ void startServer() {
     }
 
     int n = -1;
+    int k = 5;
 
     // 接受客户端的连接
-    while (1) {
+    while (k>0) {
+        k--;
+
         if ((connect_fd = accept(socket_fd, (struct sockaddr *) NULL, NULL)) == -1) {
             printf("accept socket error: %s(errno: %d)\n", strerror(errno), errno);
             continue;
@@ -69,6 +72,5 @@ void startServer() {
 
             close(connect_fd);
         }
-
     }
 }
