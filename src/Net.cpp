@@ -65,6 +65,9 @@ void startServer() {
             continue;
         }
 
+        printf("client -----------\n");
+
+
         // 接受客户端传过来的数据
         n = recv(connect_fd, buffer, MAXLINE, 0);
         if (n > 0) {
