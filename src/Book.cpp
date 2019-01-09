@@ -1,6 +1,4 @@
-﻿
-#include "Log.h"
-#include "Book.h"
+﻿#include "Book.h"
 
 #include <string>
 

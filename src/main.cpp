@@ -52,13 +52,63 @@ void test_1(){
 
 }
 
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
+#define DEFAULT_PORT 8000
+#define MAXLINE 4096
+
+
+void startServer(){
+    int socket_fd;
+    int connect_fd;
+    struct sockaddr_in serveradd;
+    char buffer[1024*4];
+
+    // 初始化socket
+    socket_fd = socket(AF_INET,SOCK_STREAM,0);
+    if(-1 == socket_fd){
+        printf("create socket error: %s(errno: %d)\n",strerror(errno),errno);
+        exit(0);
+    }
+
+    // 初始化serveradd
+    memset(&serveradd,0,sizeof(sockaddr_in));
+    serveradd.sin_family = AF_INET;
+    // INADDR_ANY 系统自动获取本机地址
+    serveradd.sin_addr.s_addr = htol(INADDR_ANY);
+    // 设置端口号
+    serveradd.sin_port = htos(DEFAULT_PORT);
+
+    // bind 绑定套接字
+    if(bind(socket_fd,(struct sockadd*)&serveradd,sizeof(serveradd))==-1){
+        printf("bind socket error: %s(errno: %d)\n",strerror(errno),errno);
+        exit(0);
+    }
+
+    // 监听
+    if(listen(socket_fd,10) == -1){
+        printf("listen socket error: %s(errno: %d)\n",strerror(errno),errno);
+        exit(0);        
+    }
+
+    // 接受客户端的连接
+    while(1){
+        if((connect_fd = accept(socket_fd,(struct sockadd*)NULL,NULL))==-1){
+            printf("accept socket error: %s(errno: %d)\n",strerror(errno),errno);
+            continue;
+        }
+    }
+
+}
+
 int main(int argc, char const *argv[])
 {
     std::cout<<"hello main"<<std::endl;
 
-    Book book("name");
 
-    LogI(book.name);
 
     
     
