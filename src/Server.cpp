@@ -1,6 +1,3 @@
-//
-// Created by Apple on 2019/1/9.
-//
 #include "Server.h"
 
 
@@ -10,6 +7,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 
@@ -57,8 +55,6 @@ void reader_writer(int connect_fd) {
             } else {
                 delete data;
             }
-
-
         } else {
             close(connect_fd);
             break;
@@ -75,7 +71,6 @@ void startTCPServer() {
     int connect_fd;
 
     struct sockaddr_in servaddr;
-
 
     // 初始化socket
     socket_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -119,10 +114,12 @@ void startTCPServer() {
         std::thread rw(reader_writer, connect_fd);
         rw.detach();
     }
+
+    close(socket_fd);
 }
 
 
 void startUDPServer() {
-
+    switch_server = true;
 }
 
