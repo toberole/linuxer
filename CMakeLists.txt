@@ -1,6 +1,6 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.8)
 
-project ("linuxer")
+project("linuxer")
 
 add_compile_options(-std=c++14)
 
@@ -8,17 +8,18 @@ add_compile_options(-std=c++14)
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src SRC_FILES)
 
 include_directories(
-	${CMAKE_CURRENT_LIST_DIR}/include
+        ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-add_executable(main ${SRC_FILES})
-target_link_libraries(main pthread)
+add_executable(xxx_main ${SRC_FILES})
+target_link_libraries(xxx_main pthread)
 
+message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
 # 添加线程库
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-	set(THREADS_PREFER_PTHREAD_FLAG ON)
-	find_package(Threads REQUIRED)
-	target_link_libraries(main Threads::Threads)
-endif()
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    target_link_libraries(xxx_main Threads::Threads)
+endif ()
 

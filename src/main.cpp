@@ -57,7 +57,9 @@ void test_1() {
 /**
  *
  * @param argc 命令行参数个数
- * @param argv 命令行参数数组 argv[0] 表示程序的名字
+ *
+ * @param argv 命令行参数数组
+ * argv[0] 表示程序的名字
  *
  */
 int main(int argc, char const *argv[]) {
@@ -74,13 +76,16 @@ int main(int argc, char const *argv[]) {
             startTCPServer();
         } else if (strcmp(cmd_str, "tcpc") == 0 && argc > 2) {
             char *argv2 = new char[strlen(argv[2]) + 1]{0};
+            strcpy(argv2, argv[2]);
             trim(argv2, strlen(argv2));
             startTCPClient(argv2);
         } else if (strcmp(cmd_str, "udps") == 0) {
             startUDPServer();
         } else if (strcmp(cmd_str, "udpc") == 0 && argc > 2) {
             char *argv2 = new char[strlen(argv[2]) + 1]{0};
+            strcpy(argv2, argv[2]);
             trim(argv2, strlen(argv2));
+            printf("main udpc ip: %s\n", argv2);
             startUDPClient(argv2);
         }
     }

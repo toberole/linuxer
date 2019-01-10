@@ -125,11 +125,7 @@ void startUDPServer() {
     printf("--- startUDPServer ---");
 
     int sock_fd;
-    struct sockaddr_in addr;
-
-    addr.sin_family = AF_INET;
-    addr.sin_port = DEFAULT_PORT;
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    struct sockaddr_in serv_addr;
 
     sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock_fd == -1) {
@@ -137,20 +133,26 @@ void startUDPServer() {
         exit(0);
     }
 
-    int bind_res = bind(sock_fd, (struct sockaddr *) &addr, sizeof(addr));
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(DEFAULT_PORT);// 注意一定要是网络字节序
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);// 注意一定要是网络字节序
+
+    int bind_res = bind(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
     if (bind_res == -1) {
         printf("upd bind error: %s (errno: %d)\n", strerror(errno), errno);
         exit(0);
     }
 
     printf("start recv data\n");
+
     char buffer[BUFFER_LENGTH];
     memset(buffer, 0, BUFFER_LENGTH);
 
     struct sockaddr_in client_addr;
-    int client_addr_len = sizeof(client_addr);
+    socklen_t client_addr_len = sizeof(client_addr);
     int recv_len = recvfrom(sock_fd, buffer, BUFFER_LENGTH, 0, (struct sockaddr *) &client_addr,
-                            (socklen_t *) &client_addr_len);
+                            &client_addr_len);
     if (recv_len < 0) {
         printf("upd recv error: %s (errno: %d)\n", strerror(errno), errno);
         exit(0);
@@ -158,12 +160,12 @@ void startUDPServer() {
 
     char *data = (char *) malloc(recv_len * sizeof(char) + 1);
     memset(data, 0, recv_len + 1);
-    memcmp(data, buffer, recv_len);
+    memcpy(data, buffer, recv_len);
 
     printf("client data: %s\n", data);
 
     char *sendData = "hello world";
-    sendto(sock_fd, sendData, strlen(sendData), 0, (struct sockaddr *) &client_addr, sizeof(addr));
+    sendto(sock_fd, sendData, strlen(sendData), 0, (struct sockaddr *) &client_addr, client_addr_len);
 
     close(sock_fd);
 }

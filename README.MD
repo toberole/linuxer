@@ -17,11 +17,15 @@ TCP客户端：
     2、connect()
 
 
-UDP服务端和客户端:
+UDP服务端:
     1、socket
     2、bind
-    3、recv & send
+    3、recvfrom & sendto
     4、close
 
+UDP客户端:
+    1、socket
+    2、recvfrom & sendto
+    3、close
 </pre>
 

@@ -75,54 +75,49 @@ void startTCPClient(const char *server_ip) {
 void startUDPClient(const char *server_ip) {
     printf("--- startUDPClient --- ip:%s\n", server_ip);
 
-    int sock_fd;
-    struct sockaddr_in addr;
+    int client_fd;
+    struct sockaddr_in serv_addr;
 
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(SERVER_PORT);
-    if (inet_pton(AF_INET, server_ip, &addr.sin_addr.s_addr) != 1) {
-        printf("inet_pton error\n");
-        exit(0);
-    }
-
-    sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock_fd == -1) {
+    client_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (client_fd == -1) {
         printf("create socket error: %s(errno: %d)\n", strerror(errno), errno);
         exit(0);
     }
 
-    int bind_res = bind(sock_fd, (struct sockaddr *) &addr, sizeof(addr));
-    if (bind_res == -1) {
-        printf("upd bind error: %s (errno: %d)\n", strerror(errno), errno);
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(SERVER_PORT);
+    if (inet_pton(AF_INET, server_ip, &serv_addr.sin_addr.s_addr) != 1) {
+        printf("inet_pton error\n");
         exit(0);
     }
 
     char *sendData = "hello server";
 
-    int len = sizeof(addr);
-    int send_res = sendto(sock_fd, sendData, strlen(sendData), 0, (struct sockaddr *) &addr, len);
+    socklen_t len = sizeof(serv_addr);
+    int send_res = sendto(client_fd, sendData, strlen(sendData), 0, (struct sockaddr *) &serv_addr, len);
     if (-1 == send_res) {
         printf("upd send data error: %s (errno: %d)\n", strerror(errno), errno);
-        close(sock_fd);
+        close(client_fd);
         exit(0);
     }
 
 
     char buffer[MAX_CLIENT_BUFFER];
     memset(buffer, 0, MAX_CLIENT_BUFFER);
-    struct sockaddr_in serv_addr;
-    int recv_len = recvfrom(sock_fd, buffer, MAX_CLIENT_BUFFER, 0, (struct sockaddr *) &serv_addr, (socklen_t *) &len);
+    struct sockaddr_in src_addr;
+    int recv_len = recvfrom(client_fd, buffer, MAX_CLIENT_BUFFER, 0, (struct sockaddr *) &src_addr, &len);
     if (recv_len < 0) {
         printf("upd recv error: %s (errno: %d)\n", strerror(errno), errno);
-        close(sock_fd);
+        close(client_fd);
         exit(0);
     }
 
     char *data = (char *) malloc(recv_len * sizeof(char) + 1);
     memset(data, 0, recv_len + 1);
-    memcmp(data, buffer, recv_len);
+    memcpy(data, buffer, recv_len);
 
     printf("server data: %s\n", data);
 
-    close(sock_fd);
+    close(client_fd);
 }
