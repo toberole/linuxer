@@ -3,6 +3,8 @@
 #include <mutex>
 #include <string>
 
+#include <cstring>
+
 #include "AppUtil.h"
 #include "Log.h"
 #include "Book.h"
