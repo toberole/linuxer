@@ -37,9 +37,9 @@ void reader_writer(int connect_fd) {
             memcpy(data, buffer, len);
 
             // 移除空白字符
-            trim(data,len);
+            trim(data, len);
 
-            printf("客户端数据: %d -- %s \n",strlen(data),data);
+            printf("客户端数据: %d -- %s \n", strlen(data), data);
 
             if (strcmp(data, "cls") == 0) {
                 close(connect_fd);
@@ -64,6 +64,8 @@ void reader_writer(int connect_fd) {
 
 // TCP 服务端
 void startTCPServer() {
+    printf("--- startTCPServer ---");
+
     // 服务端的fd
     int socket_fd;
 
@@ -120,6 +122,49 @@ void startTCPServer() {
 
 
 void startUDPServer() {
-    switch_server = true;
+    printf("--- startUDPServer ---");
+
+    int sock_fd;
+    struct sockaddr_in addr;
+
+    addr.sin_family = AF_INET;
+    addr.sin_port = DEFAULT_PORT;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock_fd == -1) {
+        printf("create upd socket error: %s (errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    int bind_res = bind(sock_fd, (struct sockaddr *) &addr, sizeof(addr));
+    if (bind_res == -1) {
+        printf("upd bind error: %s (errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    printf("start recv data\n");
+    char buffer[BUFFER_LENGTH];
+    memset(buffer, 0, BUFFER_LENGTH);
+
+    struct sockaddr_in client_addr;
+    int client_addr_len = sizeof(client_addr);
+    int recv_len = recvfrom(sock_fd, buffer, BUFFER_LENGTH, 0, (struct sockaddr *) &client_addr,
+                            (socklen_t *) &client_addr_len);
+    if (recv_len < 0) {
+        printf("upd recv error: %s (errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    char *data = (char *) malloc(recv_len * sizeof(char) + 1);
+    memset(data, 0, recv_len + 1);
+    memcmp(data, buffer, recv_len);
+
+    printf("client data: %s\n", data);
+
+    char *sendData = "hello world";
+    sendto(sock_fd, sendData, strlen(sendData), 0, (struct sockaddr *) &client_addr, sizeof(addr));
+
+    close(sock_fd);
 }
 

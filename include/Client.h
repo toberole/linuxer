@@ -5,8 +5,8 @@
 #ifndef LINUXER_CLIENT_H
 #define LINUXER_CLIENT_H
 
-void startTCPClient(char *server_ip);
+void startTCPClient(const char *server_ip);
 
-void startUDPClient();
+void startUDPClient(const char *server_ip);
 
 #endif //LINUXER_CLIENT_H

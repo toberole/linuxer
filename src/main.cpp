@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-
+#include "AppUtil.h"
 #include "Log.h"
 #include "Book.h"
 
@@ -54,13 +54,36 @@ void test_1() {
 
 }
 
-
+/**
+ *
+ * @param argc 命令行参数个数
+ * @param argv 命令行参数数组 argv[0] 表示程序的名字
+ *
+ */
 int main(int argc, char const *argv[]) {
     std::cout << "hello main" << std::endl;
 
+    if (argc > 1) {
+        const char *cmd = argv[1];
+        char *cmd_str = new char[strlen(cmd) + 1]{0};
+        strcpy(cmd_str, cmd);
+        trim(cmd_str, strlen(cmd_str));
+        printf("cmd_str: %s\n", cmd_str);
 
-    // startTCPServer();
-    startTCPClient("10:129:29:16");
+        if (strcmp(cmd_str, "tcps") == 0) {
+            startTCPServer();
+        } else if (strcmp(cmd_str, "tcpc") == 0 && argc > 2) {
+            char *argv2 = new char[strlen(argv[2]) + 1]{0};
+            trim(argv2, strlen(argv2));
+            startTCPClient(argv2);
+        } else if (strcmp(cmd_str, "udps") == 0) {
+            startUDPServer();
+        } else if (strcmp(cmd_str, "udpc") == 0 && argc > 2) {
+            char *argv2 = new char[strlen(argv[2]) + 1]{0};
+            trim(argv2, strlen(argv2));
+            startUDPClient(argv2);
+        }
+    }
 
 
     std::cout << "press any key to exit ......" << std::endl;

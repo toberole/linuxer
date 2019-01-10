@@ -19,7 +19,9 @@
 #define MAX_CLIENT_BUFFER 512
 
 
-void startTCPClient(char *server_ip) {
+void startTCPClient(const char *server_ip) {
+    printf("--- startTCPClient --- ip:%s\n", server_ip);
+
     int socketfd;
     struct sockaddr_in servaddr;
 
@@ -36,8 +38,7 @@ void startTCPClient(char *server_ip) {
     servaddr.sin_port = htons(SERVER_PORT);
 
     // inet_pton IP地址转换函数，将IP地址在“点分十进制”和“整数”之间转换
-    char *ip = "10.129.29.16";
-    int res = inet_pton(AF_INET, ip, &servaddr.sin_addr);
+    int res = inet_pton(AF_INET, server_ip, &servaddr.sin_addr);
     if (res != 1) {
         printf("inet_pton error\n");
         exit(0);
@@ -71,6 +72,57 @@ void startTCPClient(char *server_ip) {
     close(socketfd);
 }
 
-void startUDPClient() {
+void startUDPClient(const char *server_ip) {
+    printf("--- startUDPClient --- ip:%s\n", server_ip);
 
+    int sock_fd;
+    struct sockaddr_in addr;
+
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(SERVER_PORT);
+    if (inet_pton(AF_INET, server_ip, &addr.sin_addr.s_addr) != 1) {
+        printf("inet_pton error\n");
+        exit(0);
+    }
+
+    sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock_fd == -1) {
+        printf("create socket error: %s(errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    int bind_res = bind(sock_fd, (struct sockaddr *) &addr, sizeof(addr));
+    if (bind_res == -1) {
+        printf("upd bind error: %s (errno: %d)\n", strerror(errno), errno);
+        exit(0);
+    }
+
+    char *sendData = "hello server";
+
+    int len = sizeof(addr);
+    int send_res = sendto(sock_fd, sendData, strlen(sendData), 0, (struct sockaddr *) &addr, len);
+    if (-1 == send_res) {
+        printf("upd send data error: %s (errno: %d)\n", strerror(errno), errno);
+        close(sock_fd);
+        exit(0);
+    }
+
+
+    char buffer[MAX_CLIENT_BUFFER];
+    memset(buffer, 0, MAX_CLIENT_BUFFER);
+    struct sockaddr_in serv_addr;
+    int recv_len = recvfrom(sock_fd, buffer, MAX_CLIENT_BUFFER, 0, (struct sockaddr *) &serv_addr, (socklen_t *) &len);
+    if (recv_len < 0) {
+        printf("upd recv error: %s (errno: %d)\n", strerror(errno), errno);
+        close(sock_fd);
+        exit(0);
+    }
+
+    char *data = (char *) malloc(recv_len * sizeof(char) + 1);
+    memset(data, 0, recv_len + 1);
+    memcmp(data, buffer, recv_len);
+
+    printf("server data: %s\n", data);
+
+    close(sock_fd);
 }
