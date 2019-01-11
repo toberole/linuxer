@@ -12,6 +12,8 @@
 #include "Client.h"
 #include "Server.h"
 
+#include "Select.h"
+
 
 void test() {
     std::cout << "--- test ---" << std::endl;
@@ -65,7 +67,7 @@ void test_1() {
  *
  */
 int main(int argc, char const *argv[]) {
-    std::cout << "hello main" << std::endl;
+    std::cout << "hello main 计算机" << std::endl;
 
     if (argc > 1) {
         const char *cmd = argv[1];
@@ -92,6 +94,10 @@ int main(int argc, char const *argv[]) {
         }
     }
 
+    // startSelectTCPServer();
+    // test_select();
+
+    startSelectTCPServerN2N();
 
     std::cout << "press any key to exit ......" << std::endl;
     getchar();

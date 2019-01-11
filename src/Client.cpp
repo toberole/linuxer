@@ -15,8 +15,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-#define SERVER_PORT 8000
-#define MAX_CLIENT_BUFFER 512
+#include "Constant.h"
 
 
 void startTCPClient(const char *server_ip) {
@@ -25,7 +24,7 @@ void startTCPClient(const char *server_ip) {
     int socketfd;
     struct sockaddr_in servaddr;
 
-    char recvline[MAX_CLIENT_BUFFER];
+    char recvline[BUFFER_LEN];
 
     // 创建socket
     if ((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
@@ -61,7 +60,7 @@ void startTCPClient(const char *server_ip) {
     }
 
     // 接收数据
-    int len = recv(socketfd, recvline, MAX_CLIENT_BUFFER, 0);
+    int len = recv(socketfd, recvline, BUFFER_LEN, 0);
     printf("recv len %d\n", len);
 
     if (len < 0) {
@@ -78,11 +77,16 @@ void startUDPClient(const char *server_ip) {
     int client_fd;
     struct sockaddr_in serv_addr;
 
+    // 第三个参数传0 表示protocol 由前两个参数组合确定
     client_fd = socket(AF_INET, SOCK_DGRAM, 0);
     if (client_fd == -1) {
         printf("create socket error: %s(errno: %d)\n", strerror(errno), errno);
         exit(0);
     }
+
+    // 设置内核UDP缓冲区大小
+    // int n = 100 * 1024;
+    // setsockopt(client_fd, SOL_SOCKET, SO_RCVBUF,&n, sizeof(n));
 
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -103,10 +107,10 @@ void startUDPClient(const char *server_ip) {
     }
 
 
-    char buffer[MAX_CLIENT_BUFFER];
-    memset(buffer, 0, MAX_CLIENT_BUFFER);
+    char buffer[BUFFER_LEN];
+    memset(buffer, 0, BUFFER_LEN);
     struct sockaddr_in src_addr;
-    int recv_len = recvfrom(client_fd, buffer, MAX_CLIENT_BUFFER, 0, (struct sockaddr *) &src_addr, &len);
+    int recv_len = recvfrom(client_fd, buffer, BUFFER_LEN, 0, (struct sockaddr *) &src_addr, &len);
     if (recv_len < 0) {
         printf("upd recv error: %s (errno: %d)\n", strerror(errno), errno);
         close(client_fd);

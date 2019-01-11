@@ -15,8 +15,9 @@ TCP服务器端：
 TCP客户端：
     1、socket()
     2、connect()
+</pre>
 
-
+<pre>
 UDP服务端:
     1、socket
     2、bind
@@ -25,7 +26,11 @@ UDP服务端:
 
 UDP客户端:
     1、socket
+        1、1 可以加一个connect做优化。
     2、recvfrom & sendto
     3、close
 </pre>
+
+### API
+fcntl 获取和设置文件的属性，可以利用改API设置socket为阻塞或者非阻塞
 

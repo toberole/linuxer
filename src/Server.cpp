@@ -15,45 +15,37 @@
 
 #include <AppUtil.h>
 
-#define DEFAULT_PORT 8000
-#define BUFFER_LENGTH 512
+#include "Constant.h"
 
 bool switch_server = false;
 
 void reader_writer(int connect_fd) {
     // 接受客户端传过来的数据
-    char buffer[BUFFER_LENGTH];
-    memset(buffer, 0, BUFFER_LENGTH);
+    char buffer[BUFFER_LEN];
+    memset(buffer, 0, BUFFER_LEN);
 
     int len = -1;
 
     while (1) {
-        len = recv(connect_fd, buffer, BUFFER_LENGTH, 0);
+        memset(buffer, 0, BUFFER_LEN);
+        len = recv(connect_fd, buffer, BUFFER_LEN, 0);
         if (len > 0) {
-            char *data = (char *) malloc(len * sizeof(char) + 1);
-            if (data == nullptr) continue;
-
-            memset(data, 0, BUFFER_LENGTH);
-            memcpy(data, buffer, len);
 
             // 移除空白字符
-            trim(data, len);
+            trim(buffer, len);
 
-            printf("客户端数据: %d -- %s \n", strlen(data), data);
+            printf("客户端数据: %d -- %s \n", strlen(buffer), buffer);
 
-            if (strcmp(data, "cls") == 0) {
+            if (strcmp(buffer, "cls") == 0) {
                 close(connect_fd);
-                delete data;
                 break;
             }
 
-            int res = send(connect_fd, data, len, 0);
+            int res = send(connect_fd, buffer, len, 0);
             if (res == -1) {
                 perror("send data error");
                 close(connect_fd);
                 break;
-            } else {
-                delete data;
             }
         } else {
             close(connect_fd);
@@ -87,7 +79,7 @@ void startTCPServer() {
     // INADDR_ANY 系统自动获取本机地址
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     // 设置端口号
-    servaddr.sin_port = htons(DEFAULT_PORT);
+    servaddr.sin_port = htons(SERVER_PORT);
 
     // bind 绑定套接字
     if (bind(socket_fd, (struct sockaddr *) &servaddr, sizeof(servaddr)) == -1) {
@@ -95,7 +87,7 @@ void startTCPServer() {
         exit(0);
     }
 
-    // 监听
+    // 监听 设置监听最大队列10
     if (listen(socket_fd, 10) == -1) {
         printf("listen socket error: %s(errno: %d)\n", strerror(errno), errno);
         exit(0);
@@ -135,7 +127,7 @@ void startUDPServer() {
 
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(DEFAULT_PORT);// 注意一定要是网络字节序
+    serv_addr.sin_port = htons(SERVER_PORT);// 注意一定要是网络字节序
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);// 注意一定要是网络字节序
 
     int bind_res = bind(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
@@ -146,12 +138,12 @@ void startUDPServer() {
 
     printf("start recv data\n");
 
-    char buffer[BUFFER_LENGTH];
-    memset(buffer, 0, BUFFER_LENGTH);
+    char buffer[BUFFER_LEN];
+    memset(buffer, 0, BUFFER_LEN);
 
     struct sockaddr_in client_addr;
     socklen_t client_addr_len = sizeof(client_addr);
-    int recv_len = recvfrom(sock_fd, buffer, BUFFER_LENGTH, 0, (struct sockaddr *) &client_addr,
+    int recv_len = recvfrom(sock_fd, buffer, BUFFER_LEN, 0, (struct sockaddr *) &client_addr,
                             &client_addr_len);
     if (recv_len < 0) {
         printf("upd recv error: %s (errno: %d)\n", strerror(errno), errno);
