@@ -92,12 +92,13 @@ int main(int argc, char const *argv[]) {
             printf("main udpc ip: %s\n", argv2);
             startUDPClient(argv2);
         }
+    }else{
+        // startSelectTCPServer();
+        // test_select();
+
+        startSelectTCPServerN2N();
     }
 
-    // startSelectTCPServer();
-    // test_select();
-
-    startSelectTCPServerN2N();
 
     std::cout << "press any key to exit ......" << std::endl;
     getchar();

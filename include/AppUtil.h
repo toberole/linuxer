@@ -5,6 +5,8 @@
 #ifndef LINUXER_UTIL_H
 #define LINUXER_UTIL_H
 
+bool isBlankChar(char ch);
+
 void trim(char *str,int len);
 
 #endif //LINUXER_UTIL_H

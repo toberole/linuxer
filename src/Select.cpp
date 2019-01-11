@@ -241,11 +241,13 @@ void startSelectTCPServerN2N() {
                         // 读取客户端数据
                         read(fd, buffer, recv_len);
                         trim(buffer, recv_len);
-                        printf("client data: %s\n", buffer);
+                        if (strlen(buffer) > 0) {
+                            printf("client data: %s ---- len: %d\n", buffer, strlen(buffer));
 
-                        // 回复客户端数据
-                        char *data = "hello client";
-                        write(fd, data, strlen(data));
+                            // 回复客户端数据
+                            char *data = "hello client\n";
+                            write(fd, data, strlen(data));
+                        }
                     }
                 }
             }
