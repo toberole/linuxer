@@ -51,3 +51,85 @@ fcntl 获取和设置文件的属性，可以利用改API设置socket为阻塞�
 
 </pre>
 
+### epoll
+<pre>
+epoll API
+
+int epoll_create(int size);
+创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大。
+这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值。
+需要注意的是，当创建好epoll句柄后，它就是会占用一个fd值，在linux下如果查看/proc/进程id/fd/，
+能够看到这个fd，所以在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。
+
+int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+epoll的事件注册函数，它不同与select()是在监听事件时告诉内核要监听什么类型的事件，
+而是在这里先注册要监听的事件类型。第一个参数是epoll_create()的返回值，
+第二个参数表示动作，用三个宏来表示：
+EPOLL_CTL_ADD：注册新的fd到epfd中；
+EPOLL_CTL_MOD：修改已经注册的fd的监听事件；
+EPOLL_CTL_DEL：从epfd中删除一个fd；
+第三个参数是需要监听的fd
+第四个参数是告诉内核需要监听什么事
+events可以是以下几个宏的集合：
+EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
+EPOLLOUT：表示对应的文件描述符可以写；
+EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；
+EPOLLERR：表示对应的文件描述符发生错误；
+EPOLLHUP：表示对应的文件描述符被挂断；
+EPOLLET：将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。
+EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里
+
+
+3. int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);
+等待事件的产生，类似于select()调用。参数events用来从内核得到事件的集合，maxevents告之内核这个events
+有多大，这个 maxevents的值不能大于创建epoll_create()时的size，
+参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。
+该函数返回需要处理的事件数目，如返回0表示已超时
+
+
+ET、LT两种工作模式：
+ET模式仅当状态发生变化的时候才获得通知,这里所谓的状态的变化并不包括缓冲区中还有未处理的数据,
+也就是说,如果要采用ET模式,需要一直read/write直到出错为止,很多人反映为什么采用ET模式
+只接收了一部分数据就再也得不到通知了,大多因为这样;而LT模式是只要有数据没有处理就会一直通知下去的.
+
+
+epoll变成基本框架
+for( ; ; )
+{
+     nfds = epoll_wait(epfd,events,20,500);
+     for(i=0;i<nfds;++i)
+     {
+         if(events[i].data.fd==listenfd) //有新的连接
+         {
+             connfd = accept(listenfd,(sockaddr *)&clientaddr, &clilen); //accept这个连接
+             ev.data.fd=connfd;
+             ev.events=EPOLLIN|EPOLLET;
+             epoll_ctl(epfd,EPOLL_CTL_ADD,connfd,&ev); //将新的fd添加到epoll的监听队列中
+         }
+         else if( events[i].events&EPOLLIN ) //接收到数据，读socket
+         {
+             n = read(sockfd, line, MAXLINE)) < 0    //读
+             ev.data.ptr = md;     //md为自定义类型，添加数据
+             ev.events=EPOLLOUT|EPOLLET;
+             epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev);//修改标识符，等待下一个循环时发送数据，异步处理的精髓
+         }
+         else if(events[i].events&EPOLLOUT) //有数据待发送，写socket
+         {
+             struct myepoll_data* md = (myepoll_data*)events[i].data.ptr;    //取数据
+             sockfd = md->fd;
+             send( sockfd, md->ptr, strlen((char*)md->ptr), 0 );        //发送数据
+             ev.data.fd=sockfd;
+             ev.events=EPOLLIN|EPOLLET;
+             epoll_ctl(epfd,EPOLL_CTL_MOD,sockfd,&ev); //修改标识符，等待下一个循环时接收数据
+         }
+         else
+         {
+             //其他的处理
+         }
+     }
+ }
+
+</pre>
+
+linux进程中的文件描述符,前三个是默认被占用stdin stdout stderr
+

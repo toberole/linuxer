@@ -3,6 +3,8 @@
 #include <mutex>
 #include <string>
 
+#include <stdio.h>
+
 #include <cstring>
 
 #include "AppUtil.h"
@@ -13,6 +15,7 @@
 #include "Server.h"
 
 #include "Select.h"
+#include <epoll_.h>
 
 
 void test() {
@@ -66,9 +69,7 @@ void test_1() {
  * argv[0] 表示程序的名字
  *
  */
-int main(int argc, char const *argv[]) {
-    std::cout << "hello main 计算机" << std::endl;
-
+int main1(int argc, char const *argv[]) {
     if (argc > 1) {
         const char *cmd = argv[1];
         char *cmd_str = new char[strlen(cmd) + 1]{0};
@@ -96,9 +97,10 @@ int main(int argc, char const *argv[]) {
         // startSelectTCPServer();
         // test_select();
 
-        startSelectTCPServerN2N();
-    }
+        // startSelectTCPServerN2N();
 
+        startEpollTCPServer();
+    }
 
     std::cout << "press any key to exit ......" << std::endl;
     getchar();
