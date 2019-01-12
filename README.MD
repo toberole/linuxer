@@ -131,5 +131,28 @@ for( ; ; )
 
 </pre>
 
+
+### man 手册使用
+- man man 查看man手册的使用
+- man x any 查看x章节里面ang的文档
+
 linux进程中的文件描述符,前三个是默认被占用stdin stdout stderr
+进程能够打开的进程文件是有限制的
+文件描述符的个数有限制,一般是1024个[具体取决于系统]
+
+### errno
+errno是用来函数错误码的一个全局变量
+不同的errno对应不同的错误信息
+打印errno对应的错误信息：perror(“hello world”),输出hello world的同时打印错误信息
+获取errno对应的错误信息：strerror(errno)
+
+### 阻塞和非阻塞
+阻塞和非阻塞是文件的属性
+- 普通文件默认不是阻塞的 ,比如 demo.cpp
+
+- 终端设备默认是阻塞的,可以通过设置改变属性
+    1、套接字
+    2、管道
+
+
 

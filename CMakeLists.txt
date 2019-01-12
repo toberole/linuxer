@@ -14,7 +14,7 @@ include_directories(
         ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-add_executable(xxx_main ${SRC_FILES} ./demo/demo.cpp)
+add_executable(xxx_main ${SRC_FILES} ./demo/demo.cpp include/Poll_.h src/Poll_.cpp)
 # target_link_libraries(xxx_main pthread)
 
 message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
