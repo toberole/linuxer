@@ -17,7 +17,7 @@ void demo_test1() {
 }
 
 void demo_test2(int fd) {
-    int fd1 = open("test.txt", O_CREAT);
+    int fd1 = open("test.txt", O_CREAT | O_WRONLY);
     if (fd1 < 0) {
         printf("fd faild\n");
         return;
