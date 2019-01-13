@@ -5,16 +5,15 @@ project("linuxer")
 add_compile_options(-std=c++14)
 
 # ${CMAKE_CURRENT_LIST_DIR}
-aux_source_directory(
-        ${CMAKE_CURRENT_LIST_DIR}/src
-        SRC_FILES
-)
+aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src SRC_FILES)
+
+aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/demo SRC_FILES)
 
 include_directories(
         ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-add_executable(xxx_main ${SRC_FILES} ./demo/demo.cpp include/Poll_.h src/Poll_.cpp)
+add_executable(xxx_main ${SRC_FILES})
 # target_link_libraries(xxx_main pthread)
 
 message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")

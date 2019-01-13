@@ -54,7 +54,6 @@ void test_1() {
         (*th).join();
     }
 
-
     for (auto th:ths) {
         delete th;
     }
