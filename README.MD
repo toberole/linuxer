@@ -230,7 +230,20 @@ wstatus：
         >0 被回收的子进程呢个的id
 
 pid_t waitpid(pid_t pid, int *wstatus, int options);
-waitpid函数可以是阻塞或者非阻塞，通过options控制
+waitpid函数可以是阻塞或者非阻塞，通过options控制.可以制定回收那个子进程。
+
+
+### 进程间通信
+pipe[匿名管道]
+    进行有血缘关系进程之间通信，父子和兄弟进程之间通信
+
+fifo[又名管道]
+    可以进行无血缘关系进程间通信，通信时会在磁盘上生成文件
+
+mmap
+    创建匿名映射区域，有血缘关系和无血缘关系
+
+
 
 
 

@@ -132,6 +132,7 @@ void test_wait() {
     }
 }
 
+#ifdef DEMO_FILE
 
 int main() {
 
@@ -146,3 +147,5 @@ int main() {
     // getchar();
     return 0;
 }
+
+#endif

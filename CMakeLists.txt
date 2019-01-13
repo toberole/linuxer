@@ -4,6 +4,18 @@ project("linuxer")
 
 add_compile_options(-std=c++14)
 
+option(CMAKE_DEMO "test demo.cpp" OFF)
+
+if (CMAKE_DEMO)
+    add_definitions(-DDEMO_FILE)
+endif ()
+
+option(CMAKE_MAIN "test main.cpp " OFF)
+
+if (CMAKE_MAIN)
+    add_definitions(-DMAIN_FILE)
+endif ()
+
 # ${CMAKE_CURRENT_LIST_DIR}
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src SRC_FILES)
 

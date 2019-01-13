@@ -60,6 +60,7 @@ void test_1() {
 
 }
 
+#ifdef MAIN_FILE
 /**
  *
  * @param argc 命令行参数个数
@@ -68,7 +69,7 @@ void test_1() {
  * argv[0] 表示程序的名字
  *
  */
-int main1(int argc, char const *argv[]) {
+int main(int argc, char const *argv[]) {
     if (argc > 1) {
         const char *cmd = argv[1];
         char *cmd_str = new char[strlen(cmd) + 1]{0};
@@ -105,3 +106,5 @@ int main1(int argc, char const *argv[]) {
     getchar();
     return 0;
 }
+
+#endif
