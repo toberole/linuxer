@@ -171,7 +171,6 @@ void test_pipe() {
     }
 }
 
-
 #ifdef DEMO_FILE
 
 int main() {
