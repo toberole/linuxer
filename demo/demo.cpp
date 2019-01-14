@@ -171,6 +171,34 @@ void test_pipe() {
     }
 }
 
+/*
+ *
+设置文件描述符对应的属性
+int flags = fcntl(fd,F_GETFL);
+flags |= O_NONBLOCK;// 需要设置的属性
+fcntl(fd,flags);
+
+ */
+
+// 修改pipe非阻塞
+void test_pipe1() {
+    int fds[2];
+    pid_t pid = fork();
+
+    fcntl(fds[0],F_GETFL)
+    if (pid == 0) {
+        close(fds[1]);
+
+        int flags = fcntl(fds[0],F_GETFL);
+        flags |= O_NONBLOCK;// 需要设置的属性
+        fcntl(fds[0],F_SETFL,flags);
+
+    } else if (pid > 0) {
+
+    }
+
+}
+
 #ifdef DEMO_FILE
 
 int main() {
