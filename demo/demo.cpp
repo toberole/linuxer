@@ -1,11 +1,13 @@
 #include <thread>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+
 
 void demo_test() {
     printf("demo_test\n");
@@ -132,6 +134,39 @@ void test_wait() {
     }
 }
 
+// 匿名管道
+void test_pipe() {
+
+    pid_t pid = fork();
+
+    int rwfd[2];
+    int res = pipe(rwfd);
+    if (res == -1) {
+        printf("create pipe error: %s", strerror(errno));
+    }
+
+    printf("pipe rid: %d\n", rwfd[0]);
+    printf("pipe wid: %d\n", rwfd[1]);
+
+
+    if (pid == 0) {// 子进程
+        char buffer[20] = {0};
+        close(rwfd[1]);//子进程关闭写fd，只需要读
+        read(rwfd[0], buffer, 20);
+
+        printf("父进程写的数据是： %s", buffer);
+
+    } else if (pid > 0) {// 父进程
+        char *buffer1 = "hello child";
+        close(rwfd[0]);//子进程关闭写fd，只需要读
+        write(rwfd[1], buffer1, sizeof(buffer1));
+        printf("父进程写数据");
+    }
+
+    close(rwfd[0]);
+    close(rwfd[1]);
+}
+
 #ifdef DEMO_FILE
 
 int main() {
@@ -141,10 +176,12 @@ int main() {
 
     // test_orphan();
     // test_zombie();
-    test_wait();
+    // test_wait();
+
+    test_pipe();
 
     printf("press any key to exit......\n");
-    // getchar();
+    getchar();
     return 0;
 }
 
