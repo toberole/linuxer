@@ -136,9 +136,6 @@ void test_wait() {
 
 // 匿名管道
 void test_pipe() {
-
-    pid_t pid = fork();
-
     int rwfd[2];
     int res = pipe(rwfd);
     if (res == -1) {
@@ -148,23 +145,30 @@ void test_pipe() {
     printf("pipe rid: %d\n", rwfd[0]);
     printf("pipe wid: %d\n", rwfd[1]);
 
-
+    pid_t pid = fork();
     if (pid == 0) {// 子进程
         char buffer[20] = {0};
-        close(rwfd[1]);//子进程关闭写fd，只需要读
+        close(rwfd[1]);//子进程关闭写fd，只做读操作
         read(rwfd[0], buffer, 20);
 
-        printf("父进程写的数据是： %s", buffer);
+        close(rwfd[0]);
+
+        printf("父进程写的数据是： %s\n", buffer);
 
     } else if (pid > 0) {// 父进程
         char *buffer1 = "hello child";
-        close(rwfd[0]);//子进程关闭写fd，只需要读
-        write(rwfd[1], buffer1, sizeof(buffer1));
-        printf("父进程写数据");
-    }
+        close(rwfd[0]);//子进程关闭写fd，只做写操作
+        write(rwfd[1], buffer1, strlen(buffer1));
+        printf("父进程写数据\n");
 
-    close(rwfd[0]);
-    close(rwfd[1]);
+        sleep(3);
+
+        close(rwfd[1]);
+
+        while (wait(nullptr) != -1) {
+            printf("父进程回收子进程\n");
+        }
+    }
 }
 
 
