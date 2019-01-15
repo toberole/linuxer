@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <sys/mman.h>
 
 
 void demo_test() {
@@ -185,19 +186,42 @@ void test_pipe1() {
     int fds[2];
     pid_t pid = fork();
 
-    fcntl(fds[0],F_GETFL)
+    fcntl(fds[0], F_GETFL);
     if (pid == 0) {
         close(fds[1]);
 
-        int flags = fcntl(fds[0],F_GETFL);
+        int flags = fcntl(fds[0], F_GETFL);
         flags |= O_NONBLOCK;// 需要设置的属性
-        fcntl(fds[0],F_SETFL,flags);
+        fcntl(fds[0], F_SETFL, flags);
 
     } else if (pid > 0) {
 
     }
-
 }
+
+// mmap
+void test_mmap() {
+    int fd = open("./test.mmap", O_RDWR);
+    if (fd == -1) {
+        printf("open file error\n");
+        return;
+    }
+    // 获取文件长度
+    int len = lseek(fd, 0, SEEK_END);
+
+    void *ptr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    if (ptr == MAP_FAILED) {
+        printf("mmap error\n");
+        return;
+    }
+
+    // 打印文件内容
+    printf("文件内容： %s\n", (char *) ptr);
+
+    // 关闭文件映射区
+    munmap(ptr, len);
+}
+
 
 #ifdef DEMO_FILE
 
@@ -210,7 +234,8 @@ int main() {
     // test_zombie();
     // test_wait();
 
-    test_pipe();
+    // test_pipe();
+    test_mmap();
 
     printf("press any key to exit......\n");
     getchar();

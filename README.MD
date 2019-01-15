@@ -266,15 +266,44 @@ pipe[匿名管道]
 
 fifo[有名管道]
     半双工，可以进行无血缘关系进程间通信
-    通信时会在磁盘上生成伪文件[ls 可以看见]，磁盘空间为0.本质是伪文件映射到内核的缓冲区
+    通信时会在磁盘上生成伪文件[ls 可以看见],磁盘空间为0.本质是伪文件映射到内核的缓冲区
 创建：
     命令：mkfifo 管道名字
     函数：mkfifo
 
-signal信号：系统开销小
-
 mmap
-    创建匿名映射区域，有血缘关系和无血缘关系
+    1、创建匿名映射区域，有血缘关系和无血缘关系
+    2、创建磁盘文件和内存之间的映射,操作内存会被系统同步到文件
+void *mmap(
+    void *addr/*映射区首地址*/,
+    size_t length/*映射区大小 大小不能为零，一般设置为磁盘文件的大小，最终的大小 由内核决定*/,
+    int prot,/*映射区操作权限*/
+    int flags,/* MAP_SHARED MAP_PRIVATE*/
+    int fd,/*被映射的磁盘文件描述符*/
+    off_t offset/* 文件指针偏移量 一般需要是4k的倍数*/);
+PROT_EXEC  Pages may be executed.
+PROT_READ  Pages may be read.
+PROT_WRITE Pages may be written./* 必须设置读权限 */
+PROT_NONE  Pages may not be accessed.
+MAP_SHARED： 修改数据会同步到磁盘
+MAP_PRIVATE： 修改数据不会同步到磁盘
+RETURN VALUE
+    On success, mmap() returns a pointer to the mapped area.
+    On error, the value MAP_FAILED (that is, (void *) -1) is returned.
+// 释放区内存
+int munmap(void *addr/*映射区首地址*/,
+           size_t length/*映射区大小 大小不能为零*/);
+
+signal信号：
+    信号是由内核发送的
+    系统开销小,Linux特有的,windows上采用的是事件机制,不同的版本的信号可能不同
+sigaction: 捕获信号
+int sigaction(
+    int signum,
+    const struct sigaction *act,
+    struct sigaction *oldact);
+
+
 
 socket
     采用本地套接字的方式
@@ -283,6 +312,7 @@ socket
 
 命令：ulimit -a查看缓冲区大小和支持的文件描述符数
 函数：fpathconf 查看很多系统有关的信息
+file xxx 查看文件xxx属性
 
 access 可以判断文件是否存在
 
