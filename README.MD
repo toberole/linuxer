@@ -133,6 +133,16 @@ for( ; ; )
 
 </pre>
 
+### 小技巧命令
+<pre>
+命令：ulimit -a查看缓冲区大小和支持的文件描述符数
+函数：fpathconf 查看很多系统有关的信息
+file xxx 查看文件xxx属性
+time xxx 查看xxx程序启动到结束运行的时间,可以分析程序运行时间消耗作优化
+     real_time	= user_time	+ sys_time + 损耗时间
+
+access 可以判断文件是否存在
+</pre>
 
 ### man 手册使用
 - man man 查看man手册的使用
@@ -308,7 +318,7 @@ SIGKILL,SIGSTOP 不能被忽略、捕获
 
 阻塞信号集、未决信号集，存在内核pcb里面，用户不能直接操作
 阻塞信号集：要屏蔽的信号
-未决信号集：没有被处理的信号的集合，被屏蔽的信号会自动成为未决信号
+未决信号集：没有被处理的信号的集合
 
 发送信号：
 int kill(pid_t pid, int sig);给进程为pid的进程发送一个sig信号
@@ -318,18 +328,33 @@ unsigned int alarm(unsigned int seconds); 发送定时信号，每个进程只�
     注意：当调用alarm(5),还没到5秒的时候，调用alarm(0) 相当于终止定时信号
 getitimer, setitimer - get or set value of an interval timer
 
+发送一个信号，信号先进入到未决信号集，然后会在阻塞信号集中查找有没有该信号，
+如果阻塞信号集中有该信号，那么就不会调用处理信号的函数，否则就调用处理该信号的逻辑。
 
-sigaction: 捕获信号
+信号集API
+int sigemptyset(sigset_t *set);// 清空信号集合所有标志位
+
+int sigfillset(sigset_t *set);// 填充信号集合所有标志位
+
+int sigaddset(sigset_t *set, int signum);// 填充信号集合signum标志位
+
+int sigdelset(sigset_t *set, int signum);// 删除信号集合signum标志位
+
+int sigismember(const sigset_t *set, int signum);// 判断signum是否添加进set了
+
+//  将自定义信号集设置给内核阻塞信号集
+int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+
+int sigpending(sigset_t *set);// 读取当前进程的未决信号集
+
+捕获信号:
 int sigaction(
     int signum,
     const struct sigaction *act,
     struct sigaction *oldact);
 
-发送一个信号，信号先进入到未决信号集，然后会在阻塞信号集中查找有没有该信号，
-如果阻塞信号集中有该信号，那么就不会调用处理信号的函数，否则就调用处理该信号的逻辑。
-
-
-
+// 不跨平台
+sighandler_t signal(int signum/*捕捉的信号*/, sighandler_t handler/*信号处理器*/);
 
 ### socket
     采用本地套接字的方式
@@ -337,28 +362,29 @@ int sigaction(
 ### 文件：共享文件
 
 
-### 小技巧命令
-<pre>
-命令：ulimit -a查看缓冲区大小和支持的文件描述符数
-函数：fpathconf 查看很多系统有关的信息
-file xxx 查看文件xxx属性
-time xxx 查看xxx程序启动到结束运行的时间,可以分析程序运行时间消耗作优化
-     real_time	= user_time	+ sys_time + 损耗时间
-
-access 可以判断文件是否存在
-</pre>
-
 父子进程可共享的资源：
 1、文件描述符
 2、内存映射区
 
-
-
-
-
-
-
-
+### 守护进程
+    后台程序，不需要与用户交互，不受登陆和注销的影响。
+多个进程组成进程组，进程组构成会话[会长就是守护进程]。
+进程组里面的第一个进程就是组长，组长的id就是进程组的id。
+创建会话注意事项：
+    1、组长不能创建会话
+    2、创建会话的进程就是会长[有些系统创建会话需要权限]
+    3、创建新会话会丢弃原来的会话终端
+创建守护进程步骤：
+    先fork -> 父进程死亡 -> 子进程执行创建会话的操作[setid()]
+    1、fork 子进程，父进程退出[必须做]
+    2、子进程创建新会话[必须做]
+        setsid();
+    3、改变当前工作组目录[改变到系统根目录]
+        之所以需要改变工作组目录，是为了防止启动守护进程的目录卸载了
+    4、重设文件掩码
+        子进程会继承父进程的文件掩码，增加程序的灵活性umask(0)
+    5、关闭文件描述符 0,1,2 进程默认使用的
+    6、执行
 
 
 

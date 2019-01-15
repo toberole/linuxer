@@ -8,6 +8,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <signal.h>
+#include <sys/time.h>
 
 
 void demo_test() {
@@ -331,12 +333,130 @@ void test_mmap3() {
 
     // 关闭文件映射区
     munmap(ptr, len);
+}
 
+// 信号
+void test_signal() {
+    sigset_t set;
+    // 获取未决信号集
+    int ret = sigpending(&set);
+    if (ret == -1) {
+        printf("获取未决信号集失败\n");
+    }
+
+    // 屏蔽信号
+    // 1、自定义一个信号集
+    sigset_t self_set;
+    // 清空集合
+    sigemptyset(&self_set);
+    // 2 添加需要阻塞的信号
+    sigaddset(&self_set, SIGQUIT);
+    // 设置自定义信号集给内核信号集
+    sigset_t oldset;// 接受设置之前的阻塞信号集
+    sigprocmask(SIG_BLOCK, &self_set, &oldset);
+
+    // 判断前31号信号
+    for (int i = 0; i < 31; ++i) {
+        int res = sigismember(&set, i);
+        if (res == 1) {
+            printf("决信号: %d\n", i);
+        }
+    }
+}
+
+void test_sigaction_XXX(int sig) {
 
 }
 
+void test_sigaction() {
+    struct sigaction act;
+    act.sa_flags = 0;
+    sigemptyset(&act.sa_mask);
+    // 添加临时屏蔽的信号
+    sigaddset(&act.sa_mask, SIGQUIT);
+    act.sa_handler = test_sigaction_XXX;
+    sigaction(SIG_BLOCK, &act, NULL);
 
+}
 
+// 创建守护进程
+void test_daemon() {
+    pid_t pid = fork();
+    if (pid > 0) {
+        // 父进程死亡
+        raise(SIGKILL);
+    } else {
+        // 操作子进程变成守护进程
+        setsid();// 创建新会话
+        sleep(1);
+    }
+};
+
+void do_work(int sig) {
+    int fd = open("temp.txt", O_CREAT | O_RDWR | O_APPEND, 0664);
+
+    time_t current_time;
+    // 获取当前时间
+    time(&current_time);
+    // 格式化时间
+    char *timeStr = ctime(&current_time);
+
+    if (timeStr) {
+        write(fd, timeStr, strlen(timeStr));
+        write(fd, "\r\n", strlen("\r\n"));
+        close(fd);
+    }
+}
+
+/**
+ * 创建守护进程
+ * 每隔2s获取一次系统时间 写到文件
+ */
+void test_daemon1() {
+    // 创建守护进程
+    pid_t pid = fork();
+    if (pid > 0) {
+        raise(SIGKILL);
+    } else if (pid == 0) {
+        // 变成会长 脱离会话终端 变成守护进程
+        setsid();
+
+        // 改变当前工作目录
+        //chdir("/"); // 注意需要有改变到目标位置的权限
+
+        // 重设文件掩码
+        umask(0);// 相当于chmod 777
+
+        // 关闭文件描述符
+        close(STDIN_FILENO);
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+
+        // 具体业务
+        int which = ITIMER_REAL;// 对应捕获SIGALRM信号,定时法则不同 对应的信号也不同
+        struct itimerval new_value;
+        // 间隔时间
+        new_value.it_interval.tv_sec = 2; // 秒
+        new_value.it_interval.tv_usec = 0;// 微秒
+        // 第一次开始的时间
+        new_value.it_value.tv_sec = 2;
+        new_value.it_value.tv_usec = 0;
+
+        int sig = SIGALRM;
+        struct sigaction act;
+        act.sa_flags = 0;
+        act.sa_handler = do_work;
+        // 每次执行任务的时候不需要屏蔽信号
+        sigemptyset(&act.sa_mask);
+        sigaction(sig, &act, NULL);
+
+        // 设置定时器
+        setitimer(which, &new_value, NULL);
+
+        // 不允许退出
+        while (1);
+    }
+};
 
 //
 
@@ -359,12 +479,14 @@ int main() {
     // test_mmap2();
     // test_mmap3();
 
-    int n = 0;
-    alarm(1);
-    while(1){
-        printf("n = %d \n",n++);
-    }
+//    int n = 0;
+//    alarm(1);
+//    while(1){
+//        printf("n = %d \n",n++);
+//    }
 
+
+    test_daemon1();
 
 
     printf("press any key to exit......\n");
