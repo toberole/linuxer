@@ -149,7 +149,7 @@ void test_pipe() {
     pid_t pid = fork();
     if (pid == 0) {// 子进程
         char buffer[20] = {0};
-        close(rwfd[1]);//子进程关闭写fd，只做读操作
+        close(rwfd[1]);//只做读操作,子进程关闭写fd，不用最好是关闭
         read(rwfd[0], buffer, 20);
 
         close(rwfd[0]);
@@ -184,6 +184,10 @@ fcntl(fd,flags);
 // 修改pipe非阻塞
 void test_pipe1() {
     int fds[2];
+    if (pipe(fds) == -1) {
+        printf("create pipe error\n");
+        return;
+    }
     pid_t pid = fork();
 
     fcntl(fds[0], F_GETFL);
@@ -198,6 +202,39 @@ void test_pipe1() {
 
     }
 }
+
+// 线程之间通信 pipe
+void opt_pipe(int pipe_fd, int mode) {
+    if (mode == 0) {
+        // 读取
+        char buffer[200] = {0};
+        read(pipe_fd, buffer, 200);
+        printf("线程读取到的数据： %s\n", buffer);
+
+        close(pipe_fd);
+    } else if (mode == 1) {
+        // 写
+        char *data = "hello pipe reader";
+        write(pipe_fd, data, strlen(data));
+
+        close(pipe_fd);
+    }
+}
+
+void test_pipe_opt() {
+    int pipe_fds[2];
+    if (pipe(pipe_fds) == -1) {
+        printf("create pipe error\n");
+        return;
+    }
+
+    std::thread reader(opt_pipe, pipe_fds[0], 0);
+    std::thread writer(opt_pipe, pipe_fds[1], 1);
+
+    reader.join();
+    writer.join();
+}
+
 
 // mmap
 void test_mmap() {
@@ -235,8 +272,8 @@ int main() {
     // test_wait();
 
     // test_pipe();
-    test_mmap();
-
+    // test_mmap();
+    test_pipe_opt();
     printf("press any key to exit......\n");
     getchar();
     return 0;

@@ -279,7 +279,7 @@ void *mmap(
     size_t length/*映射区大小 大小不能为零，一般设置为磁盘文件的大小，最终的大小 由内核决定*/,
     int prot,/*映射区操作权限*/
     int flags,/* MAP_SHARED MAP_PRIVATE*/
-    int fd,/*被映射的磁盘文件描述符*/
+    int fd,/*被映射的磁盘文件描述符 该文件的权限必须 >= port指定的权限*/
     off_t offset/* 文件指针偏移量 一般需要是4k的倍数*/);
 PROT_EXEC  Pages may be executed.
 PROT_READ  Pages may be read.
