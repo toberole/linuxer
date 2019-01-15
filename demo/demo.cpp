@@ -11,6 +11,7 @@
 #include <signal.h>
 #include <sys/time.h>
 
+#include <pthread.h>
 
 void demo_test() {
     printf("demo_test\n");
@@ -458,6 +459,20 @@ void test_daemon1() {
     }
 };
 
+
+void test_p(void *arg) {
+    // 打印线程id
+    printf("线程id: %d\n", pthread_self());
+}
+
+void test_pthread() {
+    pthread_t pth_id;
+    int ret = pthread_create(&pth_id, NULL, (void *(*)(void *)) test_p, NULL);
+
+
+    sleep(2);
+}
+
 //
 
 
@@ -486,8 +501,9 @@ int main() {
 //    }
 
 
-    test_daemon1();
+    // test_daemon1();
 
+    test_pthread();
 
     printf("press any key to exit......\n");
     getchar();

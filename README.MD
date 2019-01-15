@@ -386,11 +386,32 @@ sighandler_t signal(int signum/*捕捉的信号*/, sighandler_t handler/*信号�
     5、关闭文件描述符 0,1,2 进程默认使用的
     6、执行
 
+### 文件权限
+文件所有者-群组用户-其他用户
+111 - 111 - 111 [RWX 读写执行]
 
+### 线程
+创建线程之后，地址空间没有变化，进程随即退出成了线程[主线程]
+主线程和子线程都有各自的pcb[子线程的pcb来自于主线程]
+主线程和子线程
+共享：
+    .text .bbs .data 堆 动态库加载区域 环境变量 命令行参数
+不共享：
+    栈
+在linux下面线程也是进程[轻量级进程 LWP]
+查看线程id:
+    1、 ps aux | grep xxx 先找到进程id
+    2、 ps -Lf xxx_pid
 
-
-
-
+### 创建线程 C++11 std::thread
+int pthread_create(
+    pthread_t *thread/*传出参数 线程id*/,
+    const pthread_attr_t *attr/* 线程属性 一般设置NULL*/,
+    void *(*start_routine) (void *)/* 线程执行的函数 */,
+    void *arg/* 线程执行是 传递给函数的参数 */)
+如果设置子线程与父线程分离，那么子线程会自己回收pcb
+如果没有设置分离，那么需要父线程去回收子线程的pcb[默认是不分离的]
+注意： perror() 不能在线程中使用
 
 
 
