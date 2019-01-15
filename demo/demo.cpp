@@ -236,7 +236,7 @@ void test_pipe_opt() {
 }
 
 
-// mmap
+// mmap 映射文件
 void test_mmap() {
     int fd = open("./test.mmap", O_RDWR);
     if (fd == -1) {
@@ -259,6 +259,87 @@ void test_mmap() {
     munmap(ptr, len);
 }
 
+// 进程间通信
+void test_mmap1() {
+    int fd = open("./test.mmap", O_RDWR);
+    if (fd == -1) {
+        printf("open file error\n");
+        return;
+    }
+    // 获取文件长度
+    int len = lseek(fd, 0, SEEK_END);
+
+    // 后续就可以操作该指针的指向的内存缓存区
+    void *ptr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    if (ptr == MAP_FAILED) {
+        printf("mmap error\n");
+        return;
+    }
+
+    char buffer[5] = {'A', 'A', 'A', 'A', 'A'};
+    pid_t pid = fork();
+    if (pid == 0) {
+        strcpy((char *) ptr, buffer);
+    } else {
+        sleep(2);
+        printf("data: %s\n", (char *) ptr);
+
+        // 关闭文件映射区
+        munmap(ptr, len);
+
+        // 回收子进程
+        while (wait(NULL) != -1) {
+
+        }
+    }
+}
+
+// 创建匿名映射区
+void test_mmap2() {
+    int len = 100;
+    void *ptr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANON/*匿名映射区必须该参数*/, -1/*不需要文件描述符*/, 0);
+
+    strcpy((char *) ptr, "hello ANNO MMAP");
+
+    printf("ANNO MMAP DATA: %s\n", (char *) ptr);
+
+    // 关闭文件映射区
+    munmap(ptr, len);
+}
+
+// 创建映射区 非血缘关系进程通信
+// 不同的进程映射同一个磁盘文件，注意偏移量需要一样
+void test_mmap3() {
+    int fd = open("./anno.txt", O_CREAT | O_RDWR, 0664);
+    if (fd < 0) {
+        printf("open file error\n");
+        return;
+    }
+
+    int len = 4096;
+
+    // 空文件需要文件拓展
+    ftruncate(fd, len);//lseek(fd,4096,SEEK_END);
+    // 文件获取文件长度，不要直接使用len，应为拓展不一定就是len
+    len = lseek(fd, 0, SEEK_END);
+
+    void *ptr = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+
+    strcpy((char *) ptr, "hello ANNO MMAP");
+
+    printf("ANNO MMAP DATA: %s\n", (char *) ptr);
+
+    // 关闭文件映射区
+    munmap(ptr, len);
+
+
+}
+
+
+
+
+//
+
 
 #ifdef DEMO_FILE
 
@@ -273,7 +354,19 @@ int main() {
 
     // test_pipe();
     // test_mmap();
-    test_pipe_opt();
+    // test_pipe_opt();
+    // test_mmap1();
+    // test_mmap2();
+    // test_mmap3();
+
+    int n = 0;
+    alarm(1);
+    while(1){
+        printf("n = %d \n",n++);
+    }
+
+
+
     printf("press any key to exit......\n");
     getchar();
     return 0;
