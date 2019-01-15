@@ -287,6 +287,8 @@ PROT_WRITE Pages may be written./* 必须设置读权限 */
 PROT_NONE  Pages may not be accessed.
 MAP_SHARED： 修改数据会同步到磁盘
 MAP_PRIVATE： 修改数据不会同步到磁盘
+注意：
+    当open一个文件的时候，采用的是o_create[新建的文件，大小为零]，需要对文件作拓展操作lseek、truncate
 RETURN VALUE
     On success, mmap() returns a pointer to the mapped area.
     On error, the value MAP_FAILED (that is, (void *) -1) is returned.
