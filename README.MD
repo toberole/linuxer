@@ -368,7 +368,7 @@ sighandler_t signal(int signum/*捕捉的信号*/, sighandler_t handler/*信号�
 
 ### 守护进程
     后台程序，不需要与用户交互，不受登陆和注销的影响。
-多个进程组成进程组，进程组构成会话[会长就是守护进程]。
+多个进程组成进程组，多个进程组构成会话[会话里面的“会长”就是守护进程，创建守护进程可以等价于创建“会长”]。
 进程组里面的第一个进程就是组长，组长的id就是进程组的id。
 创建会话注意事项：
     1、组长不能创建会话
@@ -411,7 +411,17 @@ int pthread_create(
     void *arg/* 线程执行是 传递给函数的参数 */)
 如果设置子线程与父线程分离，那么子线程会自己回收pcb
 如果没有设置分离，那么需要父线程去回收子线程的pcb[默认是不分离的]
-注意： perror() 不能在线程中使用
+注意： perror() 不能在线程中使用,需要使用strerror(ret)
+pthread_self()// 获取线程id
+
+void pthread_exit(void *retval/* 该参数是个传出参数，可以被pthread_join第二个参数接收 */);// 退出一条线程
+
+int pthread_join(pthread_t thread, void **retval);// 阻塞等待子线程的结束，结束之后回收子线程的pcb
+
+int pthread_detach(pthread_t thread);// 设置线程分离
+
+int pthread_cancel(pthread_t thread);// 杀死一个线程，不会立即死亡[只会在取消点死亡，取消点：系统调用]
+设置取消点：void pthread_testcancel(void);
 
 
 

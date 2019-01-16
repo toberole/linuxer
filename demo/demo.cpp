@@ -460,21 +460,55 @@ void test_daemon1() {
 };
 
 
+int n = 100;
+
 void test_p(void *arg) {
     // 打印线程id
     printf("线程id: %d\n", pthread_self());
+    pthread_exit((void *) &n);
 }
 
 void test_pthread() {
     pthread_t pth_id;
     int ret = pthread_create(&pth_id, NULL, (void *(*)(void *)) test_p, NULL);
+    if (ret != 0) {
+        printf("pthread_create error %s\n", strerror(ret)/* 线程里面必须使用strerror打印error信息 */);
+        return;
+    }
+
+    void *__thread_return;
+    pthread_join(pth_id, &__thread_return/* 读取线程退出时携带的信息 */);
 
 
-    sleep(2);
+    printf("子线程退出时候的信息： %d\n", *(int *) __thread_return);
 }
 
-//
+// 通过属性设置线程分离
+void test_pthread1() {
+    pthread_t pth_id;
+    pthread_attr_t attr;
 
+    int s = pthread_attr_init(&attr);
+    if (s != 0) {
+        printf("pthread_attr_init error\n");
+    }
+
+    // 设置分离属性
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);// PTHREAD_CREATE_JOINABLE
+
+    int ret = pthread_create(&pth_id, &attr, (void *(*)(void *)) test_p, NULL);
+    if (ret != 0) {
+        printf("pthread_create error %s\n", strerror(ret)/* 线程里面必须使用strerror打印error信息 */);
+        return;
+    }
+
+    s = pthread_attr_destroy(&attr);
+    if (s != 0) {
+        printf("pthread_attr_destroy error\n");
+    }
+
+    printf("父子进程分离\n");
+}
 
 #ifdef DEMO_FILE
 
@@ -503,7 +537,7 @@ int main() {
 
     // test_daemon1();
 
-    test_pthread();
+    test_pthread1();
 
     printf("press any key to exit......\n");
     getchar();
