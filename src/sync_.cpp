@@ -52,18 +52,18 @@ void fun3(void *arg) {
 
     printf("获取读锁\n");
 
-    pthread_rwlock_rdlock(&((*p).rw_lock));
+    pthread_rwlock_unlock(&((*p).rw_lock));
 
 }
 
 void fun4(void *arg) {
     struct data_ *p = (struct data_ *) arg;
 
-    pthread_rwlock_rwlock(&((*p).rw_lock));
+    pthread_rwlock_wrlock(&((*p).rw_lock));
 
     printf("获取写锁\n");
 
-    pthread_rwlock_rwlock(&((*p).rw_lock));
+    pthread_rwlock_unlock(&((*p).rw_lock));
 }
 
 void test_mutex_sync() {
@@ -125,7 +125,7 @@ void test_rwlock_sync() {
     pthread_join(ph1, NULL);
     pthread_join(ph2, NULL);
 
-    pthread_rwlock_destroy(&(d.mutex_sync));
+    pthread_rwlock_destroy(&(d.rw_lock));
 
 }
 

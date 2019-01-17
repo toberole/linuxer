@@ -552,7 +552,7 @@ int main() {
 //    }
 
 
-    test_r
+    test_rwlock_sync();
 
 
 
