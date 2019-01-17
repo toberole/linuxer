@@ -428,10 +428,11 @@ int pthread_cancel(pthread_t thread);// 杀死一个线程，不会立即死亡[
 设置取消点：void pthread_testcancel(void);
 
 ### 锁
-1、互斥锁 pthread_mutex_t
+1、互斥锁 pthread_mutex_t[保护共享资源]
 2、读写锁 pthread_rwlock_t，写优先级高于读优先级
-
-
+3、条件变量[本质不是锁]，用来阻塞线程，需要搭配互斥锁一起使用[比如实现生产者、消费者模型]
+注意：
+    互斥锁主要是用来保护共享资源，条件变量用来阻塞线程，条件变量一般需要搭配互斥锁一起使用
 
 
 
