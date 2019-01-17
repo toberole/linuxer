@@ -13,6 +13,7 @@
 #include <pthread.h>
 
 #include "sync_.h"
+#include "p_c.h"
 
 void demo_test() {
     printf("demo_test\n");
@@ -552,9 +553,8 @@ int main() {
 //    }
 
 
-    test_rwlock_sync();
-
-
+    // test_rwlock_sync();
+    test_p_c();
 
     printf("press any key to exit......\n");
     getchar();

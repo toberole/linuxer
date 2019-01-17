@@ -25,7 +25,7 @@ include_directories(
         ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-add_executable(xxx_main ${SRC_FILES})
+add_executable(xxx_main ${SRC_FILES} src/p_c.cpp include/p_c.h)
 # target_link_libraries(xxx_main pthread)
 
 message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
