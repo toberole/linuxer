@@ -10,8 +10,9 @@
 #include <sys/mman.h>
 #include <signal.h>
 #include <sys/time.h>
-
 #include <pthread.h>
+
+#include "sync_.h"
 
 void demo_test() {
     printf("demo_test\n");
@@ -510,6 +511,7 @@ void test_pthread1() {
     printf("父子进程分离\n");
 }
 
+
 #ifdef DEMO_FILE
 
 int main() {
@@ -536,8 +538,19 @@ int main() {
 
 
     // test_daemon1();
+    // test_pthread1();
 
-    test_pthread1();
+    // test_sync();
+
+//    std::thread ths[5];
+//    for (int i = 0; i < 5; ++i) {
+//        ths[i] = std::thread(tt);;
+//    }
+//
+//    for (int j = 0; j < 5; ++j) {
+//        ths[j].join();
+//    }
+
 
     printf("press any key to exit......\n");
     getchar();

@@ -1,5 +1,9 @@
 ### 注意一定不要在头文件中写方法的实现
 
+### 安装文档
+sudo apt-get install glibc-doc
+sudo apt-get install manpages-posix-dev
+
 ### 可以通过man xxx 查看xxx系统API的文档
 
 ### Linux 网络编程
@@ -422,6 +426,12 @@ int pthread_detach(pthread_t thread);// 设置线程分离
 
 int pthread_cancel(pthread_t thread);// 杀死一个线程，不会立即死亡[只会在取消点死亡，取消点：系统调用]
 设置取消点：void pthread_testcancel(void);
+
+
+
+
+
+
 
 
 
