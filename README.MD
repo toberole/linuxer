@@ -427,6 +427,10 @@ int pthread_detach(pthread_t thread);// 设置线程分离
 int pthread_cancel(pthread_t thread);// 杀死一个线程，不会立即死亡[只会在取消点死亡，取消点：系统调用]
 设置取消点：void pthread_testcancel(void);
 
+### 锁
+1、互斥锁 pthread_mutex_t
+2、读写锁 pthread_rwlock_t，写优先级高于读优先级
+
 
 
 

@@ -8,9 +8,11 @@
 
 struct data_ {
     pthread_mutex_t mutex_sync;
+    pthread_rwlock_t rw_lock;
     int count;
 };
 
+////////////////// 互斥锁 //////////////////////
 void fun1(void *arg) {
     struct data_ *p = (struct data_ *) arg;
 
@@ -42,7 +44,18 @@ void fun2(void *arg) {
     }
 }
 
-void test_sync() {
+/////////////////////// 读写锁 /////////////////////
+void fun3(void *arg) {
+    pthread_rwlock_init()
+}
+
+void fun3(void *arg) {
+    pthread_rwlock_t rw_lock;
+
+    pthread_rwlock_init();
+}
+
+void test_mutex_sync() {
     struct data_ d;
 
     int ret = pthread_mutex_init(&(d.mutex_sync), NULL);
@@ -72,4 +85,10 @@ void test_sync() {
 
     pthread_mutex_destroy(&(d.mutex_sync));
 }
+
+void test_rwlock_sync() {
+
+}
+
+
 

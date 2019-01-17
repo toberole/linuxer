@@ -540,7 +540,7 @@ int main() {
     // test_daemon1();
     // test_pthread1();
 
-    // test_sync();
+    // test_mutex_sync();
 
 //    std::thread ths[5];
 //    for (int i = 0; i < 5; ++i) {
@@ -550,6 +550,10 @@ int main() {
 //    for (int j = 0; j < 5; ++j) {
 //        ths[j].join();
 //    }
+
+
+
+
 
 
     printf("press any key to exit......\n");
