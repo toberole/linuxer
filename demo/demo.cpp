@@ -515,6 +515,9 @@ void test_pthread1() {
 
 #ifdef DEMO_FILE
 
+int k = 11;
+
+
 int main() {
 
     // test_fork();
@@ -555,11 +558,97 @@ int main() {
 
     // test_rwlock_sync();
     // test_p_c();
-    test_sem_sync();
+    // test_sem_sync();
+
+
+
+
+
+
+
+
+
+
+    std::thread th([]() {
+        printf("k = %d\n", k);
+        sleep(2);
+        printf("sleep\n", k);
+    });
+
+    // join: 调用该函数会阻塞当前线程，直到由 *this 所标示的线程执行完毕 join 才返回
+    th.join();
+    printf("th.join()\n", k);
+
 
     printf("press any key to exit......\n");
     getchar();
+
+
+//    std::thread th([](){
+//        printf("k = %d\n",k);
+//        sleep(1);
+//    });
+
+    // th.detach();
+    // th.join();
+    // 主线程调用该api退出
+    // pthread_exit(NULL);
+
+
+
     return 0;
 }
 
 #endif
+
+/*
+    POSIX标准定义：
+
+    按照POSIX标准定义，当主线程在子线程终止之前调用pthread_exit()时，子线程是不会退出的。
+
+    注意：这里在main函数中调用pthread_exit()只会是主线程退出，而进程并未退出
+
+    exit(): 退出进程
+    pthread_exit()：结束退出线程
+
+    注意：
+        如果不调用pthread_exit退出主线程，那么主线程如果是在子线程之前退出，那么进程就会随之退出
+        导致子线程也一起会随着进程的退出而退出。
+
+
+*/
+
+/*
+主线程、子线程调用exit， pthread_exit，互相产生的影响。
+
+1、在主线程中，在main函数中return了或是调用了exit函数，则主线程退出，且整个进程也会终止，
+
+此时进程中的所有线程也将终止。因此要避免main函数过早结束。
+
+2、在主线程中调用pthread_exit,   则仅仅是主线程结束，进程不会结束，进程内的其他线程也不会结束，
+
+知道所有线程结束，进程才会终止。
+
+3、在任何一个线程中调用exit函数都会导致进程结束。进程一旦结束，那么进程中的所有线程都将结束。
+
+ 
+
+线程到底有没有主次之分？
+
+*/
+
+/** 
+ *
+ * 1: 线程使用return  (这种方法对线程还适用，从main函数return 相当于调用exit)
+ * 2: 调用pthread_cancel (一个线程可以调用pthread_cancel终止同一进程中的另一个线程)
+ * 3: 调用pthread_exit(线程可以调用pthread_exit终止自己,
+    有两种情况需要注意：
+ *  一种情况是，在主线程中，如果从main函数返回或是调用了exit函数退出主线程，
+ *      则整个进程将终止，此时进程中有线程也将终止，因此在主线程中不能过早地从main
+ *      函数返回；
+ *  另外一种情况：如果主线程调用pthread_exit函数，则仅仅是主线程消亡，
+ *      进程不会结束，进程内的其他线程也不会终止，直到所有线程结束，进程才会结束；
+ *  线程终止最重要的问题是资源释放问题，特别是一些临界资源在一段时间内只能被
+ *      一个线程所持有，当线程要使用临界资源需提出请求，如果该资源未被使用则申请
+ *      成功，否则等待。临界资源使用完毕后要释放以便其它线程可以使用。
+*/
