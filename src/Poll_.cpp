@@ -54,31 +54,67 @@ void test_poll() {
     fds[0].fd = serv_fd;
     fds[0].events = POLLIN;
 
+    nfds_t nfds = 10;
 
-    while (1{
-        int client_fd = accept(serv_fd, NULL, NULL);
-        if (client_fd <= 0) {
-            printf("accept errno: %d,errmsg: %s\n", errno, strerror(errno));
-            return;
+    char buffer[512];
+    memset(buffer, 0, 512);
+
+    while (1) {
+        ret = poll(fds, nfds, 0);
+        if (ret > 0) {
+            for (int i = 0; i < 10; ++i) {
+                if (fds[i].fd == serv_fd && fds[i].revents == POLLIN) {
+                    // 客户端连接
+                    int cfd = accept(fds[i].fd, NULL, NULL);
+                    if (cfd < 0) {
+                        continue;
+                    }
+
+                    int flags = fcntl(cfd, F_GETFL);
+                    flags |= O_NONBLOCK;
+                    fcntl(cfd, F_SETFL, flags);
+
+
+                    for (int j = 0; j < 10; ++j) {
+                        if (fds[j].fd <= 0) {
+                            fds[j].fd = cfd;
+                            fds[j].events = POLLIN;
+                            break;
+                        }
+                    }
+                } else if (fds[i].revents == POLLIN) {// 读
+                    memset(buffer, 0, 512);
+                    ret = read(fds[i].fd, buffer, 512);
+                    if (ret < 0) {
+                        printf("read errno: %d,errmsg: %s\n", errno, strerror(errno));
+                        continue;
+                    }
+
+                    printf("client data: %s\n", buffer);
+
+                    fds[i].revents = POLLOUT;
+                } else if (fds[i].revents == POLLOUT) {// 写
+                    char *data = "hello client\n";
+                    int len = strlen(data);
+                    ret = write(fds[i].fd, data, len);
+
+                    fds[i].events = POLLIN;
+
+                    if (ret < len) {
+                        close(fds[i].fd);
+                        fds[i].fd = -1;
+                        fds[i].events = -1;
+                    }
+                } else if (fds[i].revents == POLLERR) {
+                    // TODO
+                    close(fds[i].fd);
+                    fds[i].fd = -1;
+                    fds[i].events = -1;
+                }
+            }
         }
-
-        char buffer[512];
-        memset(buffer, 0, 512);
-        ret = read(client_fd, buffer, 512);
-        if (ret < 0) {
-            printf("read errno: %d,errmsg: %s\n", errno, strerror(errno));
-            return;
-        }
-
-        printf("client data: %s\n", buffer);
-
-        write(client_fd, buffer, ret);
     }
 
 
-
-    close(client_fd);
     close(serv_fd);
-
-
 }
