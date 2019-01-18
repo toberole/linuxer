@@ -2,7 +2,7 @@
 
 project("linuxer")
 
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 
 option(CMAKE_DEMO "test demo.cpp" OFF)
 

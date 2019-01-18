@@ -38,6 +38,7 @@ void c() {
     while (1) {
         pthread_mutex_lock(&mutex);
         while (count != 1) {
+            // 类似java的wait
             pthread_cond_wait(&cond, &mutex);
         }
 
@@ -45,7 +46,7 @@ void c() {
         count--;
         printf("消费了\n\n");
 
-        // 通知生产者生产
+        // 通知生产者生产 类似java的notify
         pthread_cond_signal(&cond);
 
         pthread_mutex_unlock(&mutex);
