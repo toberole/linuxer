@@ -431,10 +431,11 @@ int pthread_cancel(pthread_t thread);// 杀死一个线程，不会立即死亡[
 1、互斥锁 pthread_mutex_t[保护共享资源]
 2、读写锁 pthread_rwlock_t，写优先级高于读优先级
 3、条件变量 pthread_cond_t[本质不是锁]，用来阻塞线程，需要搭配互斥锁一起使用[比如实现生产者、消费者模型]
-pthread_cond_wait: wait之后 会自动解锁mutex；当阻塞结束的时候 会自动再次加锁
-
+pthread_cond_wait: wait之后 会自动解锁释放mutex，让出cpu执行权限；
+当有其他的线程发出唤醒信号[pthread_cond_signal],会与其他阻塞在同一把锁上争取锁权限。
 注意：
     互斥锁主要是用来保护共享资源，条件变量是用来阻塞线程，条件变量一般需要搭配互斥锁一起使用
+4、信号量 相当于高级的互斥锁[pv操作]
 
 
 ### 生产者消费者模型

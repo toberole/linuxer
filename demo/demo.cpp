@@ -554,7 +554,8 @@ int main() {
 
 
     // test_rwlock_sync();
-    test_p_c();
+    // test_p_c();
+    test_sem_sync();
 
     printf("press any key to exit......\n");
     getchar();
