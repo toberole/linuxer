@@ -12,6 +12,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 
+#include "Poll_.h"
 #include "sync_.h"
 #include "p_c.h"
 
@@ -561,6 +562,7 @@ int main() {
     // test_sem_sync();
 
 
+    test_poll();
 
 
 
@@ -568,16 +570,15 @@ int main() {
 
 
 
-
-    std::thread th([]() {
-        printf("k = %d\n", k);
-        sleep(2);
-        printf("sleep\n", k);
-    });
-
-    // join: 调用该函数会阻塞当前线程，直到由 *this 所标示的线程执行完毕 join 才返回
-    th.join();
-    printf("th.join()\n", k);
+//    std::thread th([]() {
+//        printf("k = %d\n", k);
+//        sleep(2);
+//        printf("sleep\n", k);
+//    });
+//
+//    // join: 调用该函数会阻塞当前线程，直到由 *this 所标示的线程执行完毕 join 才返回
+//    th.join();
+//    printf("th.join()\n", k);
 
 
     printf("press any key to exit......\n");
