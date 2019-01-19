@@ -16,6 +16,13 @@ if (CMAKE_MAIN)
     add_definitions(-DMAIN_FILE)
 endif ()
 
+option(CMAKE_DEMO01 "test demo01.cpp " OFF)
+
+if (CMAKE_DEMO01)
+    add_definitions(-DDEMO01)
+endif ()
+
+
 # ${CMAKE_CURRENT_LIST_DIR}
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src SRC_FILES)
 
@@ -25,7 +32,7 @@ include_directories(
         ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-add_executable(xxx_main ${SRC_FILES} src/p_c.cpp include/p_c.h)
+add_executable(xxx_main ${SRC_FILES} src/p_c.cpp include/p_c.h demo/demo01.cpp)
 # target_link_libraries(xxx_main pthread)
 
 message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
