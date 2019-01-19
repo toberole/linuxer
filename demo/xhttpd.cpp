@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
         char protocol[BUFFER_LEN] = {0};
 
         // 获取http请求头部 [GET /readme.txt HTTP/1.1]
-        if (fgets(line, sizeof(line), stdin) == NULL) {
+        if (fgets(line, sizeof(line), stdin) == NULL) {// fgets 读取一行 \r\n终止
             send_msg("request error", NULL, -1);
         }
 
@@ -45,14 +45,22 @@ int main(int argc, char **argv) {
             send_msg("request error", NULL, -1);
         }
 
-        char *data = (char *) malloc(strlen(method) + strlen(path) + strlen(protocol));
-        // 字符串拼接的方式
-        sprintf(data, "%s %s %s", method, path, protocol);
+//        char *data = (char *) malloc(strlen(method) + strlen(path) + strlen(protocol));
+//        // 字符串拼接的方式
+//        sprintf(data, "%s %s %s", method, path, protocol);
+//
+//        // send_msg(data, "send data", 0);
+//
+//
+//        delete data;
 
-        send_msg(data, "send data", 0);
+        while (fgets(line, sizeof(line), stdin) != NULL) {// fgets 读取一行 \r\n终止
+            if (strcmp(line, "\r\n") || strcmp(line, "\n")) {
+                break;
+            }
+        }
 
-
-        delete data;
+        send_file("");
 //////////////////////////////////////////////////////////////////////
 
     }

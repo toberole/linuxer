@@ -16,7 +16,7 @@ void send_status(int status, char *desc) {
 }
 
 void send_header(char *header, char *header_value) {
-    printf("%s:%s\r\n", header, header_value);
+    printf("%s: %s\r\n", header, header_value);
 }
 
 int send_msg(char *msg, char *title, int flag) {
@@ -69,10 +69,7 @@ int send_file(char *filename) {
         int filelen = lseek(fd, 0L, SEEK_END);
         lseek(fd, 0L, SEEK_SET);
 
-        char str[10];
-        sprintf(str, "%d", filelen);
-
-        // send_header("Content-Length", str);
+        printf("Content-Length: %lld", filelen);
 
         printf("\r\n");
 
@@ -84,6 +81,8 @@ int send_file(char *filename) {
     }
 
     fflush(stdout);
+
+    exit(0);
 
     return 0;
 }
