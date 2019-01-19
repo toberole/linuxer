@@ -474,6 +474,9 @@ while(true){
 1、apt install xinetd
 2、配置 在/etc/xinetd.d目录下面，创建一个services的配置，直接拷贝里面的services ，修改即可
 3、修改/etc/services文件
+<pre>
+
+</pre>
 
 
 
