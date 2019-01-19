@@ -58,11 +58,13 @@ int send_msg(char *msg, char *title, int flag) {
 
 int send_file(char *filename) {
     int fd = open("test.jpg", O_WRONLY);
-    if (fd < 0) {
+    if (fd <= 0) {
         send_msg("open file error", "open error", -1);
+        return 0;
     } else {
         send_status(200, "OK");
         send_header("Content-Type", "image/jpeg");
+
         // 获取文件长度
         int filelen = lseek(fd, 0L, SEEK_END);
         lseek(fd, 0L, SEEK_SET);
@@ -70,7 +72,7 @@ int send_file(char *filename) {
         char str[10];
         sprintf(str, "%d", filelen);
 
-        send_header("Content-Length", str);
+        // send_header("Content-Length", str);
 
         printf("\r\n");
 
@@ -78,8 +80,10 @@ int send_file(char *filename) {
         memset(data, 0, filelen + 1);
         read(fd, data, sizeof(data));
 
-        printf("%s", "hello");
+        printf("%s", data);
     }
+
+    fflush(stdout);
 
     return 0;
 }

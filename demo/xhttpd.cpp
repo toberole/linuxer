@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <cstdlib>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "xhttpd_engine.h"
 
@@ -20,10 +22,11 @@ int main(int argc, char **argv) {
     if (argc < 2) {
         send_msg("argc < 2", NULL, -1);
     } else {
+
         int ret = -1;
         // 改变当前工作目录
         ret = chdir(argv[1]);// argv[1] xinetd 配置文件中配置的server_flags参数
-
+        umask(0);
         if (ret < 0) {
             send_msg("chdir error", NULL, -1);
         }
@@ -46,10 +49,12 @@ int main(int argc, char **argv) {
         // 字符串拼接的方式
         sprintf(data, "%s %s %s", method, path, protocol);
 
-        // send_msg(data, "send data", 0);
-        send_file("");
+        send_msg(data, "send data", 0);
+
 
         delete data;
+//////////////////////////////////////////////////////////////////////
+
     }
 
     return 0;
