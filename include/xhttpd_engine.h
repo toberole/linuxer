@@ -9,8 +9,8 @@ void send_status(int status, char *desc);
 
 void send_header(char *header, char *header_value);
 
-int send_msg(char *msg, char *title, int flag);
+void send_msg(char *msg, char *title, int flag);
 
-int send_file(char *filename);
+void send_file(char *filename);
 
 #endif //LINUXER_XHTTPD_ENGINE_H

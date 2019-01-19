@@ -10,16 +10,17 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <cstring>
+#include <sys/stat.h>
 
 void send_status(int status, char *desc) {
     printf("HTTP/1.1 %d %s\r\n", status, desc);
 }
 
 void send_header(char *header, char *header_value) {
-    printf("%s: %s\r\n", header, header_value);
+    printf("%s:%s\r\n", header, header_value);
 }
 
-int send_msg(char *msg, char *title, int flag) {
+void send_msg(char *msg, char *title, int flag) {
     if (flag < 0) {
         send_status(500, "error");
         send_header("Content-Type", "text/html; charset=utf-8");
@@ -53,36 +54,41 @@ int send_msg(char *msg, char *title, int flag) {
 
     fflush(stdout);
 
-    return 0;
+    exit(0);
 }
 
-int send_file(char *filename) {
-    int fd = open("test.jpg", O_WRONLY);
-    if (fd <= 0) {
-        send_msg("open file error", "open error", -1);
-        return 0;
-    } else {
-        send_status(200, "OK");
-        send_header("Content-Type", "image/jpeg");
+void send_file(char *filename) {
+    struct stat statbuff;
+    int ret = stat("test.jpg", &statbuff);
+    if (-1 == ret) {
+        send_msg("file not found exception", "open error", -1);
+        exit(0);
+    }
 
-        // 获取文件长度
-        int filelen = lseek(fd, 0L, SEEK_END);
-        lseek(fd, 0L, SEEK_SET);
 
-        printf("Content-Length: %lld", filelen);
+    send_status(200, "ok");
+    send_header("Content-Type", "image/jpeg");
 
-        printf("\r\n");
+    // 获取文件长度
+    int filelen = statbuff.st_size;
+    printf("Content-Length: %lld\r\n", filelen);
+    send_header("Connection", "close");
 
-        char *data = (char *) malloc(filelen + 1);
-        memset(data, 0, filelen + 1);
-        read(fd, data, sizeof(data));
+    printf("\r\n");
 
-        printf("%s", data);
+    FILE *fp = fopen("test.jpg", "r");
+    if (NULL == fp) {
+        send_msg("file not found exception", "open error", -1);
+        exit(0);
+    }
+
+    int ich = 0;// 注意ich 必须是int
+    while ((ich = getc(fp)) != EOF) {
+        putchar(ich);
     }
 
     fflush(stdout);
+    fclose(fp);
 
-    exit(0);
-
-    return 0;
+    return;
 }

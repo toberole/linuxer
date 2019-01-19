@@ -32,7 +32,7 @@ include_directories(
 if (CMAKE_XHTTPD)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY /home/linux/web)
     add_definitions(-DXHTTPD)
-    add_executable(xhttpd ${SRC_FILES} include/xhttpd_engine.cpp include/xhttpd_engine.h)
+    add_executable(xhttpd ${SRC_FILES} src/xhttpd_engine.cpp include/xhttpd_engine.h)
     target_link_libraries(xhttpd pthread)
 endif ()
 
