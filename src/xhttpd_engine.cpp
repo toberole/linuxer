@@ -5,11 +5,11 @@
 
 #include "xhttpd_engine.h"
 
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <cstring>
+#include <string.h>
 #include <sys/stat.h>
 
 void send_status(int status, char *desc) {
@@ -82,10 +82,18 @@ void send_file(char *filename) {
         exit(0);
     }
 
+    // char buffer[1024] = {0};
     int ich = 0;// 注意ich 必须是int
     while ((ich = getc(fp)) != EOF) {
         putchar(ich);
     }
+
+//    while (!feof(fp)) {
+//        fgets(buffer, sizeof(buffer) - 1, fp);
+//        puts(buffer);
+//        memset(buffer, 0, 1024);
+//    }
+
 
     fflush(stdout);
     fclose(fp);
