@@ -102,7 +102,7 @@ void send_file(char *filename) {
     unsigned char buffer[1024] = {0};
     int rc;
     while ((rc = fread(buffer, sizeof(unsigned char), 1024, fp)) != 0) {
-        fwrite(buffer, sizeof(unsigned char), rc, stdout);
+        fwrite(buffer, sizeof(unsigned char)/* 读取二进制流的单位大小 */, rc, stdout);
     }
 
 
