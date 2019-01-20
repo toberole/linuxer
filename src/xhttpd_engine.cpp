@@ -82,17 +82,28 @@ void send_file(char *filename) {
         exit(0);
     }
 
-    // char buffer[1024] = {0};
-    int ich = 0;// 注意ich 必须是int
-    while ((ich = getc(fp)) != EOF) {
-        putchar(ich);
-    }
 
-//    while (!feof(fp)) {
-//        fgets(buffer, sizeof(buffer) - 1, fp);
-//        puts(buffer);
-//        memset(buffer, 0, 1024);
+//    int ich = 0;// 注意ich 必须是int
+//    while ((ich = getc(fp)) != EOF) {
+//        putchar(ich);
 //    }
+
+    // FILE *fp = fopen("/home/linux/web/dir/test.txt", "r");
+//    unsigned char buffer[1024] = {0};
+//    if (fp != NULL) {
+//        while (!feof(fp)) {// 注意二进制文件读写的坑
+//            fgets(buffer, sizeof(buffer) - 1, fp);
+//            puts(buffer);
+//            fflush(stdout);
+//            memset(buffer, 0, 1024);
+//        }
+//    }
+
+    unsigned char buffer[1024] = {0};
+    int rc;
+    while ((rc = fread(buffer, sizeof(unsigned char), 1024, fp)) != 0) {
+        fwrite(buffer, sizeof(unsigned char), rc, stdout);
+    }
 
 
     fflush(stdout);

@@ -18,6 +18,8 @@
 
 #define BUFFER_LEN 2048
 
+int i = 0;
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         send_msg("argc < 2", NULL, -1);
@@ -49,7 +51,7 @@ int main(int argc, char **argv) {
 //        // 字符串拼接的方式
 //        sprintf(data, "%s %s %s", method, path, protocol);
 //
-//        // send_msg(data, "send data", 0);
+//        send_msg(data, "send data", 0);
 //
 //
 //        delete data;
@@ -60,7 +62,10 @@ int main(int argc, char **argv) {
 //        }
 //    }
 
-    send_file("");
+    if (strcmp(path, "/huhu")==0) {
+        send_file("");
+    }
+
 
 
     return 0;
