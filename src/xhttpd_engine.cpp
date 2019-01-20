@@ -58,8 +58,22 @@ void send_msg(char *msg, char *title, int flag) {
 }
 
 void send_file(char *filename) {
+    // /test.jpg
+    if (NULL == filename) {
+        send_msg("fileName == NULL exception", "request error", -1);
+        exit(0);
+    }
+
+    int fileNameLen = -1;
+    fileNameLen = strlen(filename);
+    char *fn = (char *) malloc(fileNameLen - 1);
+    memset(fn, 0, fileNameLen - 1);
+    // char *strncpy(char *dest, const char *src, size_t n);
+    // char *strcpy(char *dest, const char *src);
+    strcpy(fn, filename + 1);
+
     struct stat statbuff;
-    int ret = stat("test.jpg", &statbuff);
+    int ret = stat(fn, &statbuff);
     if (-1 == ret) {
         send_msg("file not found exception", "open error", -1);
         exit(0);
@@ -67,6 +81,7 @@ void send_file(char *filename) {
 
 
     send_status(200, "ok");
+    // 需要根据文件后缀 确定IMIE
     send_header("Content-Type", "image/jpeg");
 
     // 获取文件长度
@@ -109,5 +124,5 @@ void send_file(char *filename) {
     fflush(stdout);
     fclose(fp);
 
-    return;
+    exit(0);
 }

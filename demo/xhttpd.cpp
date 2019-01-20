@@ -62,10 +62,10 @@ int main(int argc, char **argv) {
 //        }
 //    }
 
-    if (strcmp(path, "/huhu")==0) {
-        send_file("");
-    }
 
+
+
+    send_file(path);
 
 
     return 0;
