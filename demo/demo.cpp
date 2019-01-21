@@ -16,6 +16,8 @@
 #include "sync_.h"
 #include "p_c.h"
 
+#include "AppUtil.h"
+
 void demo_test() {
     printf("demo_test\n");
 }
@@ -351,12 +353,21 @@ void test_signal() {
     // 屏蔽信号
     // 1、自定义一个信号集
     sigset_t self_set;
-    // 清空集合
+    // 清空自定义信号集合[类似数组的置0操作]
     sigemptyset(&self_set);
     // 2 添加需要阻塞的信号
     sigaddset(&self_set, SIGQUIT);
     // 设置自定义信号集给内核信号集
     sigset_t oldset;// 接受设置之前的阻塞信号集
+    /**
+     * int sigprocmask(int how,const sigset_t *set,sigset * oset);
+     * 如果oset是非空指针，则读取进程的当前信号屏蔽状态字通过oset参数传出，如果set是非空指针，则更改进程的信号屏蔽状态字，参数how只是如何更改。
+     * 如果oset和set都是非空指针，则先将原来的信号屏蔽字备份到oset里，然后根据set和how参数更改信号屏蔽字。
+     * how含义
+     * --SIG_BLOCK    set包含了我们希望添加到当前信号屏蔽字的信号，相当于mask=mask|set(位或运算)
+     * --SIG_UNBLOCK    set包含了我们希望从当前信号屏蔽字中解除阻塞的信号，相当于mask=mask^set(位异或运算)
+     * --SIG_SETMASK    设置当前信号屏蔽字为set所指向的值，相当于mask=set
+     */
     sigprocmask(SIG_BLOCK, &self_set, &oldset);
 
     // 判断前31号信号
@@ -372,6 +383,7 @@ void test_sigaction_XXX(int sig) {
 
 }
 
+// 信号处理
 void test_sigaction() {
     struct sigaction act;
     act.sa_flags = 0;
@@ -513,6 +525,22 @@ void test_pthread1() {
     printf("父子进程分离\n");
 }
 
+
+
+void test_u2g_g2u(){
+    char *s = "中国";
+    int fd = open("test.txt", O_RDWR|O_CREAT, S_IRUSR | S_IWUSR);
+    char buf[10];
+    utf8s2gbks(s, strlen(s), buf, sizeof(buf));
+    write(fd, buf, strlen(buf));
+    close(fd);
+
+    fd = open("test.txt2", O_RDWR|O_CREAT, S_IRUSR | S_IWUSR);
+    char buf2[10];
+    gbks2utf8s(buf, strlen(buf), buf2, sizeof(buf2));
+    write(fd, buf2, strlen(buf2));
+    close(fd);
+}
 
 #ifdef DEMO_FILE
 

@@ -74,7 +74,7 @@ void send_file(char *filename) {
     int ret = stat(fn, &statbuff);
     if (-1 == ret) {
         send_msg("file not found exception", "open error", -1);
-        delete fn;
+        free(fn);
         exit(0);
     }
 
@@ -93,7 +93,7 @@ void send_file(char *filename) {
     FILE *fp = fopen(fn, "r");
     if (NULL == fp) {
         send_msg("file not found exception", "open error", -1);
-        delete fn;
+        free(fn);
         exit(0);
     }
 
@@ -126,7 +126,7 @@ void send_file(char *filename) {
     }
 
 
-    delete fn;
+    free(fn);
     fflush(stdout);
     fclose(fp);
 
