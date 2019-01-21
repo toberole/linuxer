@@ -431,7 +431,7 @@ void test_daemon1() {
         // 重设文件掩码
         umask(0);// 相当于chmod 777
 
-        // 关闭文件描述符
+        // 关闭文件描述符 因为脱离了会话终端 这三个标准的fd已经没什么作用 关闭释放资源
         close(STDIN_FILENO);
         close(STDOUT_FILENO);
         close(STDERR_FILENO);

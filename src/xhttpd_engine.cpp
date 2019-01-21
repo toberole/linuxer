@@ -68,14 +68,13 @@ void send_file(char *filename) {
     fileNameLen = strlen(filename);
     char *fn = (char *) malloc(fileNameLen - 1);
     memset(fn, 0, fileNameLen - 1);
-    // char *strncpy(char *dest, const char *src, size_t n);
-    // char *strcpy(char *dest, const char *src);
     strcpy(fn, filename + 1);
 
     struct stat statbuff;
     int ret = stat(fn, &statbuff);
     if (-1 == ret) {
         send_msg("file not found exception", "open error", -1);
+        delete fn;
         exit(0);
     }
 
@@ -91,9 +90,10 @@ void send_file(char *filename) {
 
     printf("\r\n");
 
-    FILE *fp = fopen("test.jpg", "r");
+    FILE *fp = fopen(fn, "r");
     if (NULL == fp) {
         send_msg("file not found exception", "open error", -1);
+        delete fn;
         exit(0);
     }
 
@@ -117,10 +117,16 @@ void send_file(char *filename) {
     unsigned char buffer[1024] = {0};
     int rc;
     while ((rc = fread(buffer, sizeof(unsigned char), 1024, fp)) != 0) {
-        fwrite(buffer, sizeof(unsigned char)/* 读取二进制流的单位大小 */, rc, stdout);
+        /**
+         * size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+         * size: 单个元素的大小
+         * nmemb：要读取元素的个数
+         */
+        fwrite(buffer, sizeof(unsigned char)/* 指单个元素的大小 */, rc, stdout);
     }
 
 
+    delete fn;
     fflush(stdout);
     fclose(fp);
 
