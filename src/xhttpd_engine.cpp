@@ -70,6 +70,24 @@ void send_file(char *filename) {
     memset(fn, 0, fileNameLen);
     strcpy(fn, filename + 1);
 
+    // test.jpg
+    // .jpg
+    int fn_len = strlen(fn);
+    int pos = -1;
+    for (int i = 0; i < fn_len; ++i) {
+        if (fn[i] == '.') {
+            pos = i;
+            break;
+        }
+    }
+
+    char *suffix_buf = (char *) malloc(sizeof(char) * (fn_len - pos));
+    if (-1 != pos) {
+        strcpy(suffix_buf, fn + pos);
+    }
+
+    char *suffix = getContentType(suffix_buf);
+
     struct stat statbuff;
     int ret = stat(fn, &statbuff);
     if (-1 == ret) {
@@ -78,10 +96,10 @@ void send_file(char *filename) {
         exit(0);
     }
 
-
     send_status(200, "ok");
     // 需要根据文件后缀 确定IMIE
-    send_header("Content-Type", "image/jpeg");
+
+    send_header("Content-Type", suffix);
 
     // 获取文件长度
     int filelen = statbuff.st_size;
@@ -127,8 +145,19 @@ void send_file(char *filename) {
 
 
     free(fn);
+    free(suffix_buf);
     fflush(stdout);
     fclose(fp);
 
     exit(0);
+}
+
+char *getContentType(char *suffix) {
+    if (strcmp(".jpg", suffix) == 0 ||
+        strcmp(".jpeg", suffix) == 0 ||
+        strcmp(".png", suffix) == 0) {
+        return "image/jpeg";
+    } else {
+        return "text/html; charset=utf-8";
+    }
 }

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <assert.h>
 
 #include "xhttpd_engine.h"
 
