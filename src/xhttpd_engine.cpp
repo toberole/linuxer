@@ -66,8 +66,8 @@ void send_file(char *filename) {
 
     int fileNameLen = -1;
     fileNameLen = strlen(filename);
-    char *fn = (char *) malloc(fileNameLen - 1);
-    memset(fn, 0, fileNameLen - 1);
+    char *fn = (char *) malloc(fileNameLen);
+    memset(fn, 0, fileNameLen);
     strcpy(fn, filename + 1);
 
     struct stat statbuff;

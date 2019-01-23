@@ -67,9 +67,6 @@ int main(int argc, char **argv) {
 
     send_file(path);
 
-    stdin;
-
-
     return 0;
 }
 
