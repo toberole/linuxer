@@ -64,6 +64,9 @@ int main(int argc, char **argv) {
 //    }
 
 
+//    int dev_fd = open("/dev/tty", O_RDWR);
+//    dup2(dev_fd, STDOUT_FILENO);
+//    close(dev_fd);
 
 
     send_file(path);

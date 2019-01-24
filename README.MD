@@ -183,7 +183,8 @@ shell脚本管理守护进程
 ### 文件操作符操作函数：
 dup
   int dup(int oldfd);
-        dup操作返回一个指向oldfd所指向的文件的fd,当关闭oldfd是，文件并不会关闭，可以继续使用返回的fd
+        dup操作返回一个指向oldfd所指向的文件的newfd,当关闭oldfd时候，文件并不会关闭，可以继续使用返回的newfd
+        oldfd、newfd任意一个文件描述符发生读写，都对应同一个文件的底层的数据结构
 
   int dup2(int oldfd, int newfd);
         newfd指向oldfd指向的文件
