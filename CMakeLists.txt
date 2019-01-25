@@ -36,6 +36,7 @@ add_executable(xxx_main ${SRC_FILES} src/p_c.cpp include/p_c.h demo/demo01.cpp)
 # target_link_libraries(xxx_main pthread)
 
 message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+message("SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
 # 添加线程库
 #if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
