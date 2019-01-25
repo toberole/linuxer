@@ -1,5 +1,5 @@
 ﻿build
 cmake-build-debug
-.vscode
-.vs
-.idea
+/.vscode
+/.vs
+/.idea
