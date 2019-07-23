@@ -20,7 +20,7 @@
 
 int i = 0;
 
-int main(int argc, char **argv) {
+int main_(int argc, char **argv) {
     if (argc < 2) {
         send_msg("argc < 2", NULL, -1);
     }
