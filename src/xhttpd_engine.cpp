@@ -66,23 +66,40 @@ void send_file(char *filename) {
 
     int fileNameLen = -1;
     fileNameLen = strlen(filename);
-    char *fn = (char *) malloc(fileNameLen - 1);
-    memset(fn, 0, fileNameLen - 1);
-    // char *strncpy(char *dest, const char *src, size_t n);
-    // char *strcpy(char *dest, const char *src);
+    char *fn = (char *) malloc(fileNameLen);
+    memset(fn, 0, fileNameLen);
     strcpy(fn, filename + 1);
+
+    // test.jpg
+    // .jpg
+    int fn_len = strlen(fn);
+    int pos = -1;
+    for (int i = 0; i < fn_len; ++i) {
+        if (fn[i] == '.') {
+            pos = i;
+            break;
+        }
+    }
+
+    char *suffix_buf = (char *) malloc(sizeof(char) * (fn_len - pos));
+    if (-1 != pos) {
+        strcpy(suffix_buf, fn + pos);
+    }
+
+    char *suffix = getContentType(suffix_buf);
 
     struct stat statbuff;
     int ret = stat(fn, &statbuff);
     if (-1 == ret) {
         send_msg("file not found exception", "open error", -1);
+        free(fn);
         exit(0);
     }
 
-
     send_status(200, "ok");
     // 需要根据文件后缀 确定IMIE
-    send_header("Content-Type", "image/jpeg");
+
+    send_header("Content-Type", suffix);
 
     // 获取文件长度
     int filelen = statbuff.st_size;
@@ -91,38 +108,39 @@ void send_file(char *filename) {
 
     printf("\r\n");
 
-    FILE *fp = fopen("test.jpg", "r");
+    FILE *fp = fopen(fn, "r");
     if (NULL == fp) {
         send_msg("file not found exception", "open error", -1);
+        free(fn);
         exit(0);
     }
-
-
-//    int ich = 0;// 注意ich 必须是int
-//    while ((ich = getc(fp)) != EOF) {
-//        putchar(ich);
-//    }
-
-    // FILE *fp = fopen("/home/linux/web/dir/test.txt", "r");
-//    unsigned char buffer[1024] = {0};
-//    if (fp != NULL) {
-//        while (!feof(fp)) {// 注意二进制文件读写的坑
-//            fgets(buffer, sizeof(buffer) - 1, fp);
-//            puts(buffer);
-//            fflush(stdout);
-//            memset(buffer, 0, 1024);
-//        }
-//    }
 
     unsigned char buffer[1024] = {0};
     int rc;
     while ((rc = fread(buffer, sizeof(unsigned char), 1024, fp)) != 0) {
-        fwrite(buffer, sizeof(unsigned char)/* 读取二进制流的单位大小 */, rc, stdout);
+        /**
+         * size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+         * size: 单个元素的大小
+         * nmemb：要读取元素的个数
+         */
+        fwrite(buffer, sizeof(unsigned char)/* 指单个元素的大小 */, rc, stdout);
     }
 
 
+    free(fn);
+    free(suffix_buf);
     fflush(stdout);
     fclose(fp);
 
     exit(0);
+}
+
+char *getContentType(char *suffix) {
+    if (strcmp(".jpg", suffix) == 0 ||
+        strcmp(".jpeg", suffix) == 0 ||
+        strcmp(".png", suffix) == 0) {
+        return "image/jpeg";
+    } else {
+        return "text/html; charset=utf-8";
+    }
 }

@@ -13,4 +13,6 @@ void send_msg(char *msg, char *title, int flag);
 
 void send_file(char *filename);
 
+char *getContentType(char *suffix);
+
 #endif //LINUXER_XHTTPD_ENGINE_H
